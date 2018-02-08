@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<title>Location vélos</title>
+	<meta name="description" content="Location de vélos"/>
+<!--POUR LA VUE SUR LES SMARTPHONES, LA LARGEUR DE L'ECRAN=LARGEUR ECRAN | L'UTILISATEUR NE PEUT PAS ZOOMER SUR L'ECRAN -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no"/>
+<!-- PROTOCOLE OPEN GRAPH POUR ETRE VU DES RESEAUX SOCIAUX(FB, ETC) --> 
+	<meta property="og:title" content="Vélo'v : location de vélos à Lyon" />
+	<meta property="og:description" content="Location de vélos dans la ville de Lyon" />
+	<meta property="og:type" content="website" />
+<!--		<meta property="og:url" content="http://philoem.nexgate.ch/projet_1" /> -->
+<!--AFFICHE LA PETITE ICONE SUR TOUS LES NAVIAGTEURS DONT IE -->
+	<link rel="shortcut icon" type="image/x-icon" href="photos/favicon.ico" />
+	<link rel="icon" type="image/png" href="photos/favicon.ico" />
+<!-- BOOTSTRAP & FONTS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400, 700, 900" rel="stylesheet">
+<!-- CSS  -->
+	<link rel="stylesheet" href="./style.css" /> 
+</head>
+<body>
+	<div class="container-fluid" >	
+<!-- EN-TETE STATIQUE TOUTE LA LARGEUR DE L'ECRAN-->
+		<header>
+			<nav class="navbar fixed-top navbar-dark bg-dark">
+  				<div class="navbar-brand"><h1>Vélo'v</h1></div>
+  				<p>Réservation en ligne de votre vélo à Lyon</p>
+  				<img src="photos/logo_lyon.png" alt="logo de la ville de Lyon" class="d-none d-sm-block" id="logo" />
+			</nav>
+		</header>
+<!-- SLIDER -->
+		<div class="col-xs-12" id="slider">
+			<div class="row justify-content-center">
+				<h3 id="title_slider">Les différentes étapes</h3>
+			</div>
+			<div class="row justify-content-center" id="slide">
+				<img src="photos/etape1bis.jpg" alt="Les différentes étapes pour réserver un vélo à Lyon" id="imageSlider" class="img-fluid " />
+			</div>
+			<div class="row justify-content-center" id="boutons">
+				<button type="button" class="btn btn-info btn-sm" id="prev">Prev</button>
+				<button type="button" class="btn btn-info btn-sm" id="next">Next</button>
+			</div>
+		</div>
+<!-- CARTE ET FORMULAIRES -->	
+		<div class="row justify-content-center">
+			<h3 id="title_map">Carte intéractive des stations</h3>
+		</div>
+
+		<div class="container-fluid" >
+			<div class="row justify-content-center" id="map_form">
+				<div class="col-xs-12 col-lg-9" id="map"></div>
+				<div class="col-xs-12 col-lg-3" id="formulaire"></div>
+				
+			</div>
+		</div>
+<!-- PIED DE PAGE -->		
+		<div class="container" id="footer">
+			<footer  class="row justify-content-center">
+				<div class="col-lg-12" id="piedPage">
+					<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque à vélo est fortement recommandé en ville</strong></h1>
+					<div id="timer"></div>
+				</div>
+			</footer>
+		</div>
+	</div>
+<!-- SCRIPTS JS -->
+
+	<script src="slider.js"></script>		
+		
+	<script async defer src="https://api.jcdecaux.com/vls/v1/stations?contract=Lyon&apiKey=4fd36bf901d835d9bf90b74a5a41c9e4a52e8451"></script>
+<!-- CDN jQuery first, then Popper.js, then Bootstrap JS -->	
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+
+<!-- Scripts pour la carte avec les clusters de marqueurs -->	
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDScYkZVXEttgDmYjC7kHCcWdmu8kp6Q08&callback=initMap"
+  	type="text/javascript"></script>
+
+	<script src="map.js"></script>
+
+<!-- Seulement si j'ultilise la classe ES6!en modifiant mon map.js par map2.js Et, enlever le "&callback=initMap" 
+	<script>
+		window.addEventListener('load', () => {const velovMap = new Map()});
+	</script>-->
+
+	<script src="canvas.js"></script>
+	<script src="resa.js"></script>
+	<script src="countDown.js"></script>
+</body>
+</html>

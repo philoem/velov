@@ -1,0 +1,137 @@
+body {
+   	width: auto;
+   	margin: 0px;
+	padding: 0px;
+	font-family: 'Roboto', sans-serif;
+	
+} 
+/* PARTIE HEADER*/
+.fixed-top {
+	box-shadow: 6px 6px 6px black;
+}
+header {
+	margin-bottom: 15px;
+}
+header p {
+	color: white;
+	font-size: 1.7em;
+	text-align: justify;
+	margin-bottom: -15px;
+}
+header h1 {
+	font-weight: 900;
+	font-size: 2.5em;
+	letter-spacing: 3px;
+}
+#logo {
+	border: 1px solid black;
+	width: 9%;
+}
+/* PARTIE TITRES */
+#title_slider {
+	font-size: 1.5em;
+	margin-top: 155px;
+	border-bottom: 1px solid #333;
+	padding-bottom: 10px;
+}
+#title_map {
+	font-size: 1.5em;
+	margin-top: 60px;
+	border-bottom: 1px solid #333;
+	padding-bottom: 10px;
+}
+/* PARTIE SLIDER - container des photos des différentes étapes */
+/* Pour rendre responsive les images */ 
+#imageSlider {
+	border: 1px solid grey;
+	box-shadow: 8px 8px 9px #333;
+	border-radius: 12px 12px 12px 12px;
+	margin-top: 20px;
+	left: 0;
+	margin: auto;
+}
+#next, #prev {
+	margin-top: 15px;
+	margin-left: 5px;
+	box-shadow: 5px 5px 6px #333;
+}
+/* PARTIE CARTE ET FORMULAIRES*/
+#map {
+	height: 600px;
+    top: 30px;
+    margin-bottom: 20px;
+    box-shadow: 8px 8px 9px #333;
+    border-radius: 12px 12px 12px 12px;
+}
+/* Gestion du cadre d'affichage des infos des stations */
+#formulaire {
+	border: 1px solid #334;
+	border-radius: 12px 12px 12px 12px;
+	text-align: center;
+	height: 600px;
+	top: 30px;
+	display: none;
+
+}
+#btn_reserver {
+	margin: auto;
+	font-size: 1.1em;
+	margin-top: 5px;
+	border: 1px solid #889;
+	box-shadow: 8px 8px 9px #333;
+    border-radius: 12px 12px 12px 12px;
+}
+/* Les chiffres en temps réels du nombre de vélos au total, de places vides et de vélos dispos  */
+.em1 {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+.em2 {
+	color: blue;
+	font-size: 1.3em;
+}
+.em3 {
+	color: green;
+	font-size: 1.4em;
+	font-weight: bold;
+}
+/* Message indiquant qu'il n'y a plus de vélos à réserver */ 
+#messageAlerte {
+	color: red;
+	font-weight: bold;
+}
+/* Formulaire de réservation */ 
+#signatureCanvas {
+	border: 1px solid grey;
+	width: auto;
+	height: 150px;
+	
+}
+#btn_resa, #reset {
+	box-shadow: 8px 8px 9px #333;
+}
+/* FOOTER */
+#piedPage {
+	display: block;
+	height: auto;
+	margin-top: 25px;
+	margin-bottom: 5px;
+	border-radius: 12px 12px 12px 12px;
+	color: white;
+	background-color: #333;
+	text-align: center;
+	
+}
+h1, #piedPage {
+	font-size: 1.2em;
+	line-height: 45px;
+}
+/* Paragraphe dans le fichier countDown.js pour afficher le compte à rebours */
+#timer {
+	overflow-wrap: break-word;
+	line-height: 50px;
+	font-size: 1.2em;
+}
+#timer strong {
+	font-size: 1.5em;
+}
