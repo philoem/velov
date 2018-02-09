@@ -11,7 +11,7 @@ function initMap() {
 	xhr.open('GET', 'https://api.jcdecaux.com/vls/v1/stations?contract=Lyon&apiKey=4fd36bf901d835d9bf90b74a5a41c9e4a52e8451', true);
 		
 	xhr.addEventListener('load', function(e) {
-		if (xhr.readyState === 4 && xhr.status === 200) {
+		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0 /* Pour gérer en local la requête */)) {
 			const response = JSON.parse(xhr.responseText);
 			const tabJson = response;
 			// Ajouts de marqueurs
@@ -71,7 +71,7 @@ function initMap() {
 					    	const divInfosStation = document.getElementById('formulaire');
 					    	const divResaStation = divInfosStation;
 						   	divResaStation.innerHTML = `
-						   	<form>
+						   	<form id="myForm">
 								<div class="form-group">
 									<h1>Votre réservation</h1>
 									<p><em><strong>A la station ${response[i].name}.</strong>Une fois le vélo réservé, vous avez 20 minutes pour le récupérer.</em></p>
@@ -85,15 +85,29 @@ function initMap() {
 								    <canvas class="col-lg-10" id="signatureCanvas">Ici votre signature</canvas><br>
 								</div>
 								<div class=" row justify-content-center">
-									<input class="btn btn-primary btn-block col-lg-8 " type="reset" id="reset" value="Effacez">
-									<input class="btn btn-secondary btn-block col-lg-8 form-control" type="submit" id="btn_resa" value="Réservez votre vélo">
+									<button class="btn btn-primary btn-block col-lg-8 " type="reset" id="reset" value="">Effacez</button>
+									<button class="btn btn-secondary btn-block col-lg-8 form-control " type="submit" id="btn_resa" value="">Réservez votre vélo</button>
 								</div>
 							</form> `;
 							
 							// Gestion du clique du bouton "Réservez votre vélo"
-							const resaDefinitive = document.getElementById('btn_resa');
-							resaDefinitive.addEventListener('click', function(e) {
-								return resa(), resaPermanente(), counter();
+							sessionStorage.clear();// Pour effacer les données enregistrées avant
+							const resaDefinitive = document.getElementById('formGroupExampleInput');
+							resaDefinitive.addEventListener('input', function(e) {
+								sessionStorage.setItem('nom', document.getElementById('formGroupExampleInput').value);
+						  		sessionStorage.getItem('nom');
+						  	
+								  	const resaDefinitive2 = document.getElementById('formGroupExampleInput2');
+									resaDefinitive2.addEventListener('input', function(e) {
+										sessionStorage.setItem('mail', document.getElementById('formGroupExampleInput2').value);
+								  		sessionStorage.getItem('mail');
+						  	
+								  			const btnResa = document.getElementById('btn_resa');
+								  			btnResa.addEventListener('click', function(e) {
+								  				e.preventDefault();
+					  							return counter();
+					  						});
+				  					});
 							});
 							// Gestion du bouton "Effacez" pour supprimer la signature
 						    const btn = document.getElementById('reset');
@@ -121,6 +135,7 @@ function initMap() {
 			    	} 
 				});
 			}
+
 		} else if (xhr.status != 200) { alert('Impossible de contacter le serveur'); }
 	
 	});

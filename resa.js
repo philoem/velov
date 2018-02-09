@@ -5,34 +5,56 @@ function resa() {
   		sessionStorage.setItem('nom', document.getElementById('formGroupExampleInput').value);
   		sessionStorage.setItem('mail', document.getElementById('formGroupExampleInput2').value);
   		// Récupération
-  		const prenomNom = sessionStorage.getItem('nom');
-  		const mail = sessionStorage.getItem('nom');
+  		let prenomNom = sessionStorage.getItem('nom');
+  		let mail = sessionStorage.getItem('nom');
   		// Insertion des données dans le footer
-  		const footer = document.getElementById('piedPage');
+  		let footer = document.getElementById('piedPage');
   		footer.innerHTML = `
-			<p>Ceci est un test de stockage</p>
-			${sessionStorage.getItem('nom')}
+			${prenomNom}
+      <p>Ceci est un test de stockage</p>
   		`;
-
 	} else {
 		console.log("le sessionStorage n'est pas disponible sur votre navigateur");
 	} 
 }
-function resaPermanente() {
-	
-		const prenomNom = sessionStorage.getItem('nom');
-  		const mail = sessionStorage.getItem('nom');
-  		const footer = document.getElementById('piedPage');
-  		footer.innerHTML = `
-			
-			${sessionStorage.getItem('nom')}
-  		`;
-  		
-
-}
-
+//function resaPermanente() {
+//		let prenomNom = sessionStorage.getItem('nom');
+//		let mail = sessionStorage.getItem('nom');
+//		let footer = document.getElementById('piedPage');
+//		footer.innerHTML = `
+//		
+//		${sessionStorage.getItem('nom')}
+//		`;
+//}
 // Efface toutes les données dans le sessionStorage
 function eraseResa() {
 	sessionStorage.clear();
 }
-
+/*function resa() {
+  const resa = new Resa();
+}
+class Resa {
+  constructor(nom, mail) {
+    // Emplacement des données
+    this.footer = document.getElementById('piedPage');
+    
+    //this.eraseResa();
+    this.recuperation();
+  }
+  recuperation() {
+    // Stockage
+    sessionStorage.setItem('nom', document.getElementById('formGroupExampleInput').value);
+    sessionStorage.setItem('mail', document.getElementById('formGroupExampleInput2').value);
+    // Récupération des données 
+    sessionStorage.getItem('nom');
+    sessionStorage.getItem('mail');
+    // Affichage des données dans le footer
+    this.footer.innerHTML = ` ${sessionStorage.getItem('nom')}  `;
+  }
+  //eraseResa() {
+  //  if (counter() === 0) {
+  //    sessionStorage.clear();
+  //  }
+  //}
+}
+*/
