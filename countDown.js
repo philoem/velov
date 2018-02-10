@@ -13,21 +13,21 @@ class compteRebours {
 		this.start();
 	}
 	start() {
-		//console.log(this);
 		this.interval = setInterval(() => {
 			this.s--;
 			this.timer.innerHTML =` ${this.convertSeconds(this.s)} `;
 			this.timer.innerHTML = ` 
-			<p id="timer" class="justify-content-center col-xs-12">${sessionStorage.getItem('nom')}, il vous reste <strong> ${this.min} : ${this.sec} </strong>  minutes pour récupérer votre vélo à la station.</p>
+			<p id="timer" class="justify-content-center col-xs-12">${sessionStorage.getItem('nom')}, il vous reste <strong>
+			 ${this.min} : ${this.sec} </strong>  minutes pour récupérer votre vélo à la station.</p>
 			`;
-			
 			// Condition pour stopper à 0 le décompte et effacer du même coup les données dans la sessionStorage !
 			if (this.s < 0) {
-				this.timer.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation du vélo est dépassé !</p>`;
+				this.timer.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation
+				 du vélo est dépassé !</p>
+				`;
 				clearInterval(this.interval);
 			} 
 		}, 1000);
-		
 	}
 	convertSeconds() {
 		this.min = Math.floor(this.s / 60);

@@ -101,7 +101,7 @@ function initMap() {
 									resaDefinitive2.addEventListener('input', function(e) {
 										sessionStorage.setItem('mail', document.getElementById('formGroupExampleInput2').value);
 								  		sessionStorage.getItem('mail');
-						  	
+						  					
 								  			const btnResa = document.getElementById('btn_resa');
 								  			btnResa.addEventListener('click', function(e) {
 								  				e.preventDefault();
@@ -109,10 +109,16 @@ function initMap() {
 					  						});
 				  					});
 							});
-							// Gestion du bouton "Effacez" pour supprimer la signature
+							// Gestion du bouton "Effacez" pour supprimer la signature, les données stockées et le compte à rebours
 						    const btn = document.getElementById('reset');
 						    btn.addEventListener('click', function(e) {
-						    	return signatureClear(), eraseResa();
+						    	return signatureClear(), sessionStorage.clear();
+					    		const messageError = document.getElementById('piedPage');
+					    		messageError.innerHTML = ` 
+					    		<p class="justify-content-center col-xs-12">Vous avez effacé vos coordonnées</p>
+					    		`;
+					    
+						    	
 						    });
 							// Gestion de la signature dans le canvas
 							const element = document.getElementById('signatureCanvas');
