@@ -120,7 +120,16 @@ header h1 {
 	color: white;
 	background-color: #333;
 	text-align: center;
-	
+}
+#piedPage2 {
+	display: none;
+	height: auto;
+	margin-top: 25px;
+	margin-bottom: 5px;
+	border-radius: 12px 12px 12px 12px;
+	color: white;
+	background-color: #333;
+	text-align: center;
 }
 h1, #piedPage {
 	font-size: 1.2em;

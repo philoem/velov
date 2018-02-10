@@ -113,12 +113,14 @@ function initMap() {
 						    const btn = document.getElementById('reset');
 						    btn.addEventListener('click', function(e) {
 						    	return signatureClear(), sessionStorage.clear();
-					    		const messageError = document.getElementById('piedPage');
+					    		const timer = document.getElementById('piedPage');
+					    		timer.style.display = 'none';
+					    		const messageError = document.getElementById('piedPage2');
+					    		messageError.style.display = 'block';
 					    		messageError.innerHTML = ` 
 					    		<p class="justify-content-center col-xs-12">Vous avez effacé vos coordonnées</p>
 					    		`;
-					    
-						    	
+						    							    	
 						    });
 							// Gestion de la signature dans le canvas
 							const element = document.getElementById('signatureCanvas');

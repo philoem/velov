@@ -3,6 +3,7 @@ function counter() {
 	const countDown = new compteRebours(1201);// 20 min x 60 sec = 1200 + 1 pour démarrer à 20:00 tout rond
 	//const champsValidated = new Validate();
 }
+
 class compteRebours {
 	constructor(s) {
 		this.s = s;
@@ -15,6 +16,7 @@ class compteRebours {
 	start() {
 		this.interval = setInterval(() => {
 			this.s--;
+			this.timer.style.display = 'block';
 			this.timer.innerHTML =` ${this.convertSeconds(this.s)} `;
 			this.timer.innerHTML = ` 
 			<p id="timer" class="justify-content-center col-xs-12">${sessionStorage.getItem('nom')}, il vous reste <strong>
