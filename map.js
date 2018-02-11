@@ -89,7 +89,7 @@ function initMap() {
 									<button class="btn btn-secondary btn-block col-lg-8 form-control " type="submit" id="btn_resa" value="">Réservez votre vélo</button>
 								</div>
 							</form> `;
-							
+					
 							// Gestion du clique du bouton "Réservez votre vélo"
 							sessionStorage.clear();// Pour effacer les données enregistrées avant
 							const resaDefinitive = document.getElementById('formGroupExampleInput');
@@ -110,25 +110,20 @@ function initMap() {
 				  					});
 							});
 							// Gestion du bouton "Effacez" pour supprimer la signature, les données stockées et le compte à rebours
-						    const btn = document.getElementById('reset');
-						    btn.addEventListener('click', function(e) {
+		    				const timer = document.getElementById('piedPage');
+		    				timer.innerHTML = ` <h1 class="justify-content-center col-xs-12">Veuillez entrer vos coordonnées</h1> `;
+	    					const btn = document.getElementById('reset');
+				    		btn.addEventListener('click', function(e) {
 						    	return signatureClear(), sessionStorage.clear();
-					    		const timer = document.getElementById('piedPage');
-					    		timer.style.display = 'none';
-					    		const messageError = document.getElementById('piedPage2');
-					    		messageError.style.display = 'block';
-					    		messageError.innerHTML = ` 
-					    		<p class="justify-content-center col-xs-12">Vous avez effacé vos coordonnées</p>
-					    		`;
-						    							    	
-						    });
+				    		});
+
 							// Gestion de la signature dans le canvas
 							const element = document.getElementById('signatureCanvas');
 						    element.addEventListener('mousedown', function(e) {
 						        return signatureCapture();
 						    });
-						    
 						});
+
 			        // Pas de bouton de réservation s'il n'y plus de vélos dispos avec message 
 				    } else if (tabJson[i].available_bikes === 0) {
 			    		const divInfosStation = document.getElementById('formulaire');
