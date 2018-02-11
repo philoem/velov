@@ -64,11 +64,11 @@ function initMap() {
 					  		<p><strong>Nombre de places de vélos au total</strong> : <em class="em1">${response[i].bike_stands}</em></p> 
 				        	<p><strong>Nombre de places vides pour vélos</strong> : <em class="em2">${response[i].available_bike_stands}</em></p>
 				        	<p><strong>Nombre de Vélos disponibles</strong> : <em class="em3">${response[i].available_bikes}</em></p>
-				        	<input class="btn btn-secondary btn-block col-lg-8 form-control" type="submit" id="btn_reserver" value="Réservez"> `;
+				        	<input class="btn btn-secondary btn-block col-lg-8 form-control" type="submit" id="btn_reserver" value="Réservez">
+				        	 `;
 			        	// Gestion du bouton "Réservez" renvoyant sur le formulaire pour réserver
 			        	const boutonResa = document.getElementById('btn_reserver');
 			   			boutonResa.addEventListener('click', function(e) {
-					    	const divInfosStation = document.getElementById('formulaire');
 					    	const divResaStation = divInfosStation;
 						   	divResaStation.innerHTML = `
 						   	<form id="myForm">
@@ -88,39 +88,41 @@ function initMap() {
 									<button class="btn btn-primary btn-block col-lg-8 " type="reset" id="reset" value="">Effacez</button>
 									<button class="btn btn-secondary btn-block col-lg-8 form-control " type="submit" id="btn_resa" value="">Réservez votre vélo</button>
 								</div>
-							</form> `;
-					
+							</form>
+							 `;
 							// Gestion du clique du bouton "Réservez votre vélo"
 							sessionStorage.clear();// Pour effacer les données enregistrées avant
-							const resaDefinitive = document.getElementById('formGroupExampleInput');
+							const resaDefinitive = document.getElementById('formGroupExampleInput');// Champs input pour le nom
 							resaDefinitive.addEventListener('input', function(e) {
 								sessionStorage.setItem('nom', document.getElementById('formGroupExampleInput').value);
 						  		sessionStorage.getItem('nom');
-						  	
-								  	const resaDefinitive2 = document.getElementById('formGroupExampleInput2');
-									resaDefinitive2.addEventListener('input', function(e) {
-										sessionStorage.setItem('mail', document.getElementById('formGroupExampleInput2').value);
-								  		sessionStorage.getItem('mail');
-						  					
-								  			const btnResa = document.getElementById('btn_resa');
-								  			btnResa.addEventListener('click', function(e) {
-								  				e.preventDefault();
-					  							return counter();
-					  						});
-				  					});
-							});
+						  	});
+						  	const resaDefinitive2 = document.getElementById('formGroupExampleInput2');// Champs input pour le mail
+							resaDefinitive2.addEventListener('input', function(e) {
+								sessionStorage.setItem('mail', document.getElementById('formGroupExampleInput2').value);
+						  		sessionStorage.getItem('mail');
+				  			});
+				  			const btnResa = document.getElementById('btn_resa');
+				  			btnResa.addEventListener('click', function resa(e) {
+				  				e.preventDefault();
+							    if (sessionStorage.length === 2) {
+		  							counter();
+							    } else {
+							    	return false;
+							    }
+	  						});
 							// Gestion du bouton "Effacez" pour supprimer la signature, les données stockées et le compte à rebours
 		    				const timer = document.getElementById('piedPage');
 		    				timer.innerHTML = ` <h1 class="justify-content-center col-xs-12">Veuillez entrer vos coordonnées</h1> `;
 	    					const btn = document.getElementById('reset');
-				    		btn.addEventListener('click', function(e) {
-						    	return signatureClear(), sessionStorage.clear();
-				    		});
+				    		btn.addEventListener('click', function reset(e) {
+						    	signatureClear(), sessionStorage.clear();
+						    });
 
 							// Gestion de la signature dans le canvas
 							const element = document.getElementById('signatureCanvas');
 						    element.addEventListener('mousedown', function(e) {
-						        return signatureCapture();
+						        signatureCapture();
 						    });
 						});
 
