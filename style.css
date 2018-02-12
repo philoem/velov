@@ -71,7 +71,9 @@ header h1 {
 	height: 600px;
 	top: 30px;
 	display: none;
-
+}
+h1 #formulaire {
+	font-size: 2.5em;
 }
 #btn_reserver {
 	margin: auto;
