@@ -1,6 +1,6 @@
 // Compte à rebours des 20 minutes
 function counter() {
-	const countDown = new compteRebours(1201);// 20 min x 60 sec = 1200 + 1 pour démarrer à 20:00 tout rond
+	const countDown = new compteRebours(10);// 20 min x 60 sec = 1200 + 1 pour démarrer à 20:00 tout rond
 }
 class compteRebours {
 	constructor(s) {

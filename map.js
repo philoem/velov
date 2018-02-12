@@ -108,7 +108,7 @@ function initMap() {
 							    if (sessionStorage.length === 2) {
 		  							counter();
 							    } else {
-							    	return false;
+							    	return false;// Blocage du démarrage d'un nouveau compte à rebours sur celui qui a été lancé
 							    }
 	  						});
 							// Gestion du bouton "Effacez" pour supprimer la signature, les données stockées et le compte à rebours
