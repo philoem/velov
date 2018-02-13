@@ -151,7 +151,7 @@ class Marker extends Map {
 					  			document.querySelector('#btn_resa').addEventListener('click', (e) => {
 					  				e.preventDefault();
 					  				// Ici prénom, nom et signature obligatoire
-					  				if (window.sessionStorage.length === 2) {
+					  				if (sessionStorage.nom != null && sessionStorage.sign != null) {
 						  				this.s = 1201;	
 			  							// Compte à rebours 20 min
 		  								this.interval = setInterval(() => {
@@ -167,7 +167,7 @@ class Marker extends Map {
 												clearInterval(this.interval);
 											} 
 										}, 1000);
-	  								} else if (sessionStorage.length === 0 ) { 
+	  								} else { 
 	  									document.querySelector('#piedPage').innerHTML = `
 											<h1>Veuillez entrer vos coordonnées</h1>
 										`;
