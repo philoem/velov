@@ -18,7 +18,6 @@ class Marker extends Map {
 		this.sec = this.s % 60;
 		this.timer = document.getElementById('piedPage');
 		this.champs = document.getElementById('formGroupExampleInput');
-		this.champs2 = sessionStorage.mail;
 		this.regexMail = /@/;
 		this.result = sessionStorage.mail;
 
