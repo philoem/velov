@@ -2,16 +2,12 @@
 class Map {
 	constructor() {
 		this.initMap();
-		//this.loadStation();
-		//this.setMarker();
-		//this.setStations();
 	}
 	initMap() {
 		this.map = new google.maps.Map(document.querySelector('#map'), { 
 			zoom: 13,
 			center:{lat: 45.763519, lng: 4.8469652 }
 		});
-		//console.log(this);
 	}
 }
 class Marker extends Map {
@@ -22,7 +18,10 @@ class Marker extends Map {
 		this.sec = this.s % 60;
 		this.timer = document.getElementById('piedPage');
 		this.champs = document.getElementById('formGroupExampleInput');
-		
+		this.champs2 = sessionStorage.mail;
+		this.regexMail = /@/;
+		this.result = sessionStorage.mail;
+
 		this.convertSeconds();
 		this.icones();
 		this.loadStation();
@@ -119,7 +118,7 @@ class Marker extends Map {
 										    <label for="formGroupExampleInput2"><strong>Votre adresse mail</strong></label>
 										    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="name@example.com">
 										    <label for="formGroupExampleInput3"><strong>Ici votre signature</strong></label>
-										    <canvas class="col-lg-10" id="signatureCanvas">Ici votre signature</canvas><br>
+										    <canvas class="row col-xs-12" id="signatureCanvas">Ici votre signature</canvas><br>
 										</div>
 										<div class=" row justify-content-center">
 											<button class="btn btn-primary btn-block col-lg-8 " type="reset" id="reset" value="">Effacez</button>
@@ -147,6 +146,17 @@ class Marker extends Map {
 							  		sessionStorage.getItem('sign');
 							  		// Convertit la signature pour être stockée dans le sessionStorage
 							  		window.sessionStorage.sign = document.querySelector('#signatureCanvas').toDataURL();
+							  		// Ici vérification du format du mail
+							  		if (this.regexMail.test(this.result)) {
+										document.querySelector('#piedPage').innerHTML = `
+											<h1>Le format de votre adresse mail est valide</h1>
+										`;
+									}else {
+										document.querySelector('#piedPage').innerHTML = `
+											<h1>Le format de votre adresse mail n'est pas valide</h1>
+										`;
+									}
+									
 							  	});
 					  			document.querySelector('#btn_resa').addEventListener('click', (e) => {
 					  				e.preventDefault();
@@ -158,20 +168,21 @@ class Marker extends Map {
 											this.s--;// Remets à 20 minutes le compte à rebours
 											this.timer.innerHTML =` ${this.convertSeconds(this.s)} `;
 											this.timer.innerHTML = ` 
-												<p id="timer" class="justify-content-center col-xs-12"><em>${sessionStorage.getItem('nom')}</em>, il vous
+												<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
 												 reste <strong> ${this.min} : ${this.sec} </strong>  minutes pour récupérer votre vélo à la station
-												 <em>${this.response[i].address}</em>.</p>
+												 <em class="nameSignResa">${this.response[i].address}</em>.</p>
 											`;
 											if (this.s < 0) {
 												this.timer.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation du vélo est dépassé !</p>`;
 												clearInterval(this.interval);
 											} 
 										}, 1000);
-	  								} else { 
+									} else  { 
 	  									document.querySelector('#piedPage').innerHTML = `
 											<h1>Veuillez entrer vos coordonnées</h1>
 										`;
 	  								}
+	  								return false;
 								});
 					  										
 								// Gestion du bouton "Effacez" pour supprimer la signature
