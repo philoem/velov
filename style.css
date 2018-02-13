@@ -102,12 +102,19 @@ h1 #formulaire {
 	color: red;
 	font-weight: bold;
 }
-/* Formulaire de réservation */ 
+/* FORMULAIRE DE RESERVATION */
+/* Première lettre en majuscule pour le champs du nom et prénom */ 
+#formGroupExampleInput, #timer {
+	text-transform: capitalize;
+}
+/* Toutes les lettres du champs mail sont en minuscules */ 
+#formGroupExampleInput2 {
+	text-transform: lowercase;
+}
 #signatureCanvas {
 	border: 1px solid grey;
 	width: auto;
 	height: 150px;
-	
 }
 #btn_resa, #reset {
 	box-shadow: 8px 8px 9px #333;

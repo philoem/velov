@@ -134,35 +134,5 @@ function signatureClear() {
 
 
 
-//CANVAS
-// Récupération des coordonnées de la souris
-/*class SignTab {
-	constructor(x, y, canvas, context) {
-		this.x = x;
-		this.y = y;
-		this.context = context;
-		this.initCanvas();
-		this.draw();
-	}
-	initCanvas() {
-		this.canvas = document.getElementById('signatureCanvas');
-		this.canvas = addEventListener('click', function positionSouris(event) { 
-		    this.x = event.clientX; 
-		    this.y = event.clientY; 
-		    console.log('X = ' + this.x + ' Y = ' + this.y );
-		}); 
-	}
-	configurations() {
-		this.context = this.canvas.getContext('2d');
-		this.context.fillStyle = 'black';
-		this.context.lineWidth = 1.5;
-		this.context.lineCap = 'rond';
-		this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-	}
-	draw() {
-		
-	}
-}
-const test = new SignTab();*/
 
 
