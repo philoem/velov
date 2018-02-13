@@ -18,13 +18,21 @@ class Marker extends Map {
 		this.sec = this.s % 60;
 		this.timer = document.getElementById('piedPage');
 		this.champs = document.getElementById('formGroupExampleInput');
-		this.regexMail = /@/;
-		this.result = sessionStorage.mail;
+		//this.regexMail = sessionStorage.mail.length - (this.result + 1);
+		//this.result = sessionStorage.mail.indexOf("@");
 
+		//this.verifMail();
 		this.convertSeconds();
 		this.icones();
 		this.loadStation();
 	}
+	//verifMail() {
+	//	if (this.result > 0 && this.regexMail >= 2) {
+	//		document.querySelector('#piedPage').innerHTML = `Votre email est valide`;
+	//	} else {
+	//		document.querySelector('#piedPage').innerHTML = `Votre email n'est pas valide`;
+	//	}
+	//}
 	// Pour le compte à rebours
 	convertSeconds() {
 		this.min = Math.floor(this.s / 60);
@@ -139,6 +147,15 @@ class Marker extends Map {
 							  	document.querySelector('#formGroupExampleInput2').addEventListener('input', (e) => {
 									sessionStorage.setItem('mail', document.querySelector('#formGroupExampleInput2').value);
 							  		sessionStorage.getItem('mail');
+							  		//if (this.regexMail.test(this.result) === true) {
+									//	document.querySelector('#piedPage').innerHTML = `
+									//		<h1>Le format de votre adresse mail est valide</h1>
+									//	`;
+									//}else {
+									//	document.querySelector('#piedPage').innerHTML = `
+									//		<h1>Le format de votre adresse mail n'est pas valide</h1>
+									//	`;
+									//}
 							  	});
 							  	document.querySelector('#signatureCanvas').addEventListener('click', (e) => {
 									sessionStorage.setItem('sign', document.querySelector('#signatureCanvas').value);
@@ -146,16 +163,7 @@ class Marker extends Map {
 							  		// Convertit la signature pour être stockée dans le sessionStorage
 							  		window.sessionStorage.sign = document.querySelector('#signatureCanvas').toDataURL();
 							  		// Ici vérification du format du mail
-							  		if (this.regexMail.test(this.result)) {
-										document.querySelector('#piedPage').innerHTML = `
-											<h1>Le format de votre adresse mail est valide</h1>
-										`;
-									}else {
-										document.querySelector('#piedPage').innerHTML = `
-											<h1>Le format de votre adresse mail n'est pas valide</h1>
-										`;
-									}
-									
+									//this.verifMail();
 							  	});
 					  			document.querySelector('#btn_resa').addEventListener('click', (e) => {
 					  				e.preventDefault();
