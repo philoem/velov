@@ -16,7 +16,8 @@ class Marker extends Map {
 		this.s = 1201;// Temps correspondant à 20 minutes
 		this.min = Math.floor(this.s / 60);
 		this.sec = this.s % 60;
-		this.timer = document.getElementById('piedPage');
+		this.formulaire = document.querySelector('#formulaire');
+		this.piedPage = document.querySelector('#piedPage');
 		
 		this.convertSeconds();
 		this.icones();
@@ -26,11 +27,11 @@ class Marker extends Map {
 		this.regexMail = new RegExp("^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$");
 		this.result = this.regexMail.test(sessionStorage.mail);
 		if (this.result) {
-			document.querySelector('#piedPage').innerHTML = `
+			this.piedPage.innerHTML = `
 				<h1 class="regexpTitleOk">Votre adresse mail est valide</h1>
 			`;
 		} else {
-			document.querySelector('#piedPage').innerHTML = `
+			this.piedPage.innerHTML = `
 				<h1 class="regexpTitleNoOk">Votre adresse mail n'est pas valide</h1>
 			`;
 		}
@@ -103,8 +104,8 @@ class Marker extends Map {
 					// Gestion des événements sur les marqueurs avec l'affichage des formulaires
 					this.marker.addListener('click', (e) => {
 						if (this.tabJson[i].available_bikes >= 1) {
-					  		document.querySelector('#formulaire').style.display = 'block';
-						  	document.querySelector('#formulaire').innerHTML = `
+					  		this.formulaire.style.display = 'block';
+						  	this.formulaire.innerHTML = `
 					  			<h1 class="pt-5">Informations station</h1>
 						  		<p>${this.response[i].name} ${this.response[i].address}</p>
 						  		<p><strong>Nombre de places de vélos au total</strong> : <em class="em1">${this.response[i].bike_stands}</em></p> 
@@ -115,7 +116,7 @@ class Marker extends Map {
 				        	//console.log(this);
 				        	// Gestion du bouton "Réservez" renvoyant sur le formulaire pour réserver
 				   			document.querySelector('#btn_reserver').addEventListener('click', (e) => {
-						    	document.querySelector('#formulaire').innerHTML = `
+						    	this.formulaire.innerHTML = `
 								   	<form id="myForm">
 										<div class="form-group">
 											<h1>Votre réservation</h1>
@@ -135,7 +136,7 @@ class Marker extends Map {
 										</div>
 									</form>
 								`;
-								document.querySelector('#piedPage').innerHTML = `
+								this.piedPage.innerHTML = `
 									<h1>Veuillez entrer vos coordonnées</h1>
 								`;
 								
@@ -166,19 +167,19 @@ class Marker extends Map {
 			  							// Compte à rebours 20 min
 		  								this.interval = setInterval(() => {
 											this.s--;// Remets à 20 minutes le compte à rebours
-											this.timer.innerHTML =` ${this.convertSeconds(this.s)} `;
-											this.timer.innerHTML = ` 
+											this.piedPage.innerHTML =` ${this.convertSeconds(this.s)} `;
+											this.piedPage.innerHTML = ` 
 												<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
 												 reste <strong> ${this.min} : ${this.sec} </strong>  minutes pour récupérer votre vélo à la station
 												 <em class="nameSignResa">${this.response[i].address}</em>.</p>
 											`;
 											if (this.s < 0) {
-												this.timer.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation du vélo est dépassé !</p>`;
+												this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation du vélo est dépassé !</p>`;
 												clearInterval(this.interval);
 											} 
 										}, 1000);
 									} else  { 
-	  									document.querySelector('#piedPage').innerHTML = `
+	  									this.piedPage.innerHTML = `
 											<h1>Veuillez entrer vos coordonnées</h1>
 										`;
 	  								}
@@ -187,7 +188,7 @@ class Marker extends Map {
 					  										
 								// Gestion du bouton "Effacez" pour supprimer la signature
 							    document.querySelector('#reset').addEventListener('click', (e) => {
-							    	document.querySelector('#piedPage').innerHTML = `
+							    	this.piedPage.innerHTML = `
 										<h1>Veuillez entrer vos coordonnées</h1>
 									`;
 							    	return signatureClear(),sessionStorage.clear(), clearInterval(this.interval);
@@ -199,8 +200,8 @@ class Marker extends Map {
 							});
 				        // Pas de bouton de réservation s'il n'y plus de vélos dispos avec message 
 					    } else if (this.tabJson[i].available_bikes === 0) {
-				    		document.querySelector('#formulaire').style.display = 'block';
-				    		document.querySelector('#formulaire').innerHTML = `
+				    		this.formulaire.style.display = 'block';
+				    		this.formulaire.innerHTML = `
 					    		<h1 class="pt-5">Informations station</h1>
 					    		<p>${this.response[i].name} ${this.response[i].address} </p>
 					    		<p><strong>Nombre de places de vélos au total</strong> : <em class="em1">${this.response[i].bike_stands}</em></p> 
@@ -208,7 +209,7 @@ class Marker extends Map {
 						        <p><strong>Nombre de Vélos disponibles</strong> : <em class="em3">${this.response[i].available_bikes}</em></p>
 						        <h3 id="messageAlerte">Vous ne pouvez pas réserver de vélo pour le moment. Merci pour votre compréhension.<h3>
 					        `;
-					        document.querySelector('#piedPage').innerHTML = `
+					        this.piedPage.innerHTML = `
 								<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque
 								 à vélo est fortement recommandé en ville</strong></h1>
 							`;
