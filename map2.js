@@ -83,21 +83,21 @@ class Marker extends Map {
 							position: this.latLng,
 							map: this.map,
 							icon: this.iconeVerte,
-							title: this.tabJson[i].name 
+							title: `${this.tabJson[i].name} ${this.tabJson[i].address}` 
 						});
 			  		} else if (this.tabJson[i].available_bike_stands <= this.tabJson[i].bike_stands && this.tabJson[i].available_bike_stands >= 1) {
 			  			this.marker = new google.maps.Marker({
 							position: this.latLng,
 							map: this.map,
 							icon: this.iconeBleue,
-							title: this.tabJson[i].name 
+							title: `${this.tabJson[i].name} ${this.tabJson[i].address}` 
 						});
 			  		} else if (this.tabJson[i].status =='CLOSED') {
 			  			this.marker = new google.maps.Marker({
 							position: this.latLng,
 							map: this.map,
 							icon: this.iconeRouge,
-							title: this.tabJson[i].name 
+							title: `${this.tabJson[i].name} ${this.tabJson[i].address}` 
 						});
 			  		} 
 					// Gestion des événements sur les marqueurs avec l'affichage des formulaires
@@ -112,7 +112,7 @@ class Marker extends Map {
 					        	<p><strong>Nombre de Vélos disponibles</strong> : <em class="em3">${this.response[i].available_bikes}</em></p>
 					        	<input class="btn btn-secondary btn-block col-lg-8 form-control" type="submit" id="btn_reserver" value="Réservez">
 					        `;
-				        	
+				        	//console.log(this);
 				        	// Gestion du bouton "Réservez" renvoyant sur le formulaire pour réserver
 				   			document.querySelector('#btn_reserver').addEventListener('click', (e) => {
 						    	document.querySelector('#formulaire').innerHTML = `
@@ -208,6 +208,10 @@ class Marker extends Map {
 						        <p><strong>Nombre de Vélos disponibles</strong> : <em class="em3">${this.response[i].available_bikes}</em></p>
 						        <h3 id="messageAlerte">Vous ne pouvez pas réserver de vélo pour le moment. Merci pour votre compréhension.<h3>
 					        `;
+					        document.querySelector('#piedPage').innerHTML = `
+								<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque
+								 à vélo est fortement recommandé en ville</strong></h1>
+							`;
 				    	} 
 				    });
 				}
