@@ -17,22 +17,24 @@ class Marker extends Map {
 		this.min = Math.floor(this.s / 60);
 		this.sec = this.s % 60;
 		this.timer = document.getElementById('piedPage');
-		this.champs = document.getElementById('formGroupExampleInput');
-		//this.regexMail = sessionStorage.mail.length - (this.result + 1);
-		//this.result = sessionStorage.mail.indexOf("@");
-
-		//this.verifMail();
+		
 		this.convertSeconds();
 		this.icones();
 		this.loadStation();
 	}
-	//verifMail() {
-	//	if (this.result > 0 && this.regexMail >= 2) {
-	//		document.querySelector('#piedPage').innerHTML = `Votre email est valide`;
-	//	} else {
-	//		document.querySelector('#piedPage').innerHTML = `Votre email n'est pas valide`;
-	//	}
-	//}
+	verifMail() {
+		this.regexMail = new RegExp("^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$");
+		this.result = this.regexMail.test(sessionStorage.mail);
+		if (this.result) {
+			document.querySelector('#piedPage').innerHTML = `
+				<h1 class="regexpTitleOk">Votre adresse mail est valide</h1>
+			`;
+		} else {
+			document.querySelector('#piedPage').innerHTML = `
+				<h1 class="regexpTitleNoOk">Votre adresse mail n'est pas valide</h1>
+			`;
+		}
+	}
 	// Pour le compte à rebours
 	convertSeconds() {
 		this.min = Math.floor(this.s / 60);
@@ -147,26 +149,17 @@ class Marker extends Map {
 							  	document.querySelector('#formGroupExampleInput2').addEventListener('input', (e) => {
 									sessionStorage.setItem('mail', document.querySelector('#formGroupExampleInput2').value);
 							  		sessionStorage.getItem('mail');
-							  		//if (this.regexMail.test(this.result) === true) {
-									//	document.querySelector('#piedPage').innerHTML = `
-									//		<h1>Le format de votre adresse mail est valide</h1>
-									//	`;
-									//}else {
-									//	document.querySelector('#piedPage').innerHTML = `
-									//		<h1>Le format de votre adresse mail n'est pas valide</h1>
-									//	`;
-									//}
 							  	});
 							  	document.querySelector('#signatureCanvas').addEventListener('click', (e) => {
 									sessionStorage.setItem('sign', document.querySelector('#signatureCanvas').value);
 							  		sessionStorage.getItem('sign');
 							  		// Convertit la signature pour être stockée dans le sessionStorage
 							  		window.sessionStorage.sign = document.querySelector('#signatureCanvas').toDataURL();
-							  		// Ici vérification du format du mail
-									//this.verifMail();
 							  	});
 					  			document.querySelector('#btn_resa').addEventListener('click', (e) => {
 					  				e.preventDefault();
+							  		// Ici vérification du format du mail
+									this.verifMail();
 					  				// Ici prénom, nom et signature obligatoire
 					  				if (sessionStorage.nom != null && sessionStorage.sign != null) {
 						  				this.s = 1201;	

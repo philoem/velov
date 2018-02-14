@@ -107,6 +107,13 @@ input {
 	font-weight: bold;
 }
 /* FORMULAIRE DE RESERVATION */
+/* Messages pour les vérifications des Expressions Régulières */
+.regexpTitleOk {
+	color: #0E4;
+}
+.regexpTitleNoOk {
+	color: #F32;
+}
 /* Première lettre en majuscule pour le champs du nom et prénom */ 
 #formGroupExampleInput, .nameSignResa {
 	text-transform: capitalize;
@@ -139,7 +146,6 @@ input {
 	color: white;
 	background-color: #333;
 	text-align: center;
-	
 }
 h1, #piedPage {
 	font-size: 1.2em;
