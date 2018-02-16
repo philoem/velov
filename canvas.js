@@ -28,8 +28,8 @@ function signatureCapture() {
 	let xyLast = {};
 	let xyAddLast = {};
 	let calculate = false;
-	//functions
-	{
+	
+	//{
 		function remove_event_listeners() {
 			canvas.removeEventListener('mousemove', mousemove, false);
 			canvas.removeEventListener('mouseup', mouseup, false);
@@ -118,7 +118,7 @@ function signatureCapture() {
 			calculate = false;
 		};
 
-	}//end
+	//}//end
 
 	canvas.addEventListener('mousedown', mousedown, false);
 	canvas.addEventListener('touchstart', mousedown, false);

@@ -18,10 +18,33 @@ class Marker extends Map {
 		this.sec = this.s % 60;
 		this.formulaire = document.querySelector('#formulaire');
 		this.piedPage = document.querySelector('#piedPage');
-		
+
+		this.recupData();
 		this.convertSeconds();
 		this.icones();
 		this.loadStation();
+	}
+	// Récupération des données dans le sessionStorage
+	recupData() {
+		this.nomRecup = sessionStorage.getItem('nom');
+		this.mailRecup = sessionStorage.getItem('mail');
+		this.signRecup =sessionStorage.getItem('sign');
+		this.stationStocked = sessionStorage.getItem('station');
+		this.minutesRecup =sessionStorage.getItem('minutes');
+		this.secondesRecup =sessionStorage.getItem('secondes');
+		if (sessionStorage.length < 2) { 
+			this.piedPage.innerHTML = `
+				<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque à
+				 vélo est fortement recommandé en ville</strong></h1>
+			`;
+		} else {
+			this.piedPage.innerHTML = ` 
+				<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
+				 reste <span id="minutes"><strong> ${this.minutesRecup}</strong></span> : <span id="secondes"><strong>${this.secondesRecup} </strong></span> 
+				  minutes pour récupérer votre vélo à la station
+				 <em class="nameSignResa">${this.stationStocked}</em>.</p>
+			`;
+		}
 	}
 	verifMail() {
 		this.regexMail = new RegExp("^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$");
@@ -113,13 +136,14 @@ class Marker extends Map {
 					        	<p><strong>Nombre de Vélos disponibles</strong> : <em class="em3">${this.response[i].available_bikes}</em></p>
 					        	<input class="btn btn-secondary btn-block col-lg-8 form-control" type="submit" id="btn_reserver" value="Réservez">
 					        `;
-				        	//console.log(this);
+							// Stockage de l'adresse de la station
+							sessionStorage.setItem('station', this.response[i].name);
 				        	// Gestion du bouton "Réservez" renvoyant sur le formulaire pour réserver
 				   			document.querySelector('#btn_reserver').addEventListener('click', (e) => {
 						    	this.formulaire.innerHTML = `
 								   	<form id="myForm">
 										<div class="form-group">
-											<h1>Votre réservation</h1>
+											<h2>Votre réservation</h2>
 											<p><em><strong>A la station ${this.response[i].name}.</strong>Une fois le vélo réservé, vous avez 20 minutes pour le récupérer.</em></p>
 										    <label for="formGroupExampleInput"><strong>Veuillez indiquer votre prénom et nom</strong></label>
 										    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="prénom nom" required>
@@ -131,62 +155,63 @@ class Marker extends Map {
 										    <canvas class="row col-xs-12" id="signatureCanvas">Ici votre signature</canvas><br>
 										</div>
 										<div class=" row justify-content-center">
-											<button class="btn btn-primary btn-block col-lg-8 " type="reset" id="reset" value="">Effacez</button>
-											<button class="btn btn-secondary btn-block col-lg-8 form-control " type="submit" id="btn_resa" value="">Réservez votre vélo</button>
+											<button class="btn btn-primary btn-block col-xs-8 col-lg-8 " type="reset" id="reset" value="">Effacez</button>
+											<button class="btn btn-secondary btn-block col-xs-8 col-lg-8 form-control " type="submit" id="btn_resa" value="">Réservez votre vélo</button>
 										</div>
 									</form>
 								`;
 								this.piedPage.innerHTML = `
 									<h1>Veuillez entrer vos coordonnées</h1>
 								`;
-								
-								// Gestion du clique du bouton "Réservez votre vélo"
-								sessionStorage.clear();// Pour effacer les données enregistrées avant
-								// Ici les 3 champs du formulaire de réservation
+								// Ici les données stockées dans sessionStorage
 								document.querySelector('#formGroupExampleInput').addEventListener('input', (e) => {
 									sessionStorage.setItem('nom', document.querySelector('#formGroupExampleInput').value);
-							  		sessionStorage.getItem('nom');
+							  		
 							  	});
 							  	document.querySelector('#formGroupExampleInput2').addEventListener('input', (e) => {
 									sessionStorage.setItem('mail', document.querySelector('#formGroupExampleInput2').value);
-							  		sessionStorage.getItem('mail');
+							  		
 							  	});
 							  	document.querySelector('#signatureCanvas').addEventListener('click', (e) => {
 									sessionStorage.setItem('sign', document.querySelector('#signatureCanvas').value);
-							  		sessionStorage.getItem('sign');
+							  		
 							  		// Convertit la signature pour être stockée dans le sessionStorage
 							  		window.sessionStorage.sign = document.querySelector('#signatureCanvas').toDataURL();
-							  	});
-					  			document.querySelector('#btn_resa').addEventListener('click', (e) => {
-					  				e.preventDefault();
 							  		// Ici vérification du format du mail
 									this.verifMail();
+							  	});
+													
+								// Gestion du bouton "Réservez votre vélo"
+					  			document.querySelector('#btn_resa').addEventListener('click', (e) => {
+					  				e.preventDefault();
 					  				// Ici prénom, nom et signature obligatoire
 					  				if (sessionStorage.nom != null && sessionStorage.sign != null) {
-						  				this.s = 1201;	
-			  							// Compte à rebours 20 min
-		  								this.interval = setInterval(() => {
-											this.s--;// Remets à 20 minutes le compte à rebours
-											this.piedPage.innerHTML =` ${this.convertSeconds(this.s)} `;
-											this.piedPage.innerHTML = ` 
+					  					// Compte à rebours
+					  					this.interval = setInterval(() => {
+											this.s--;
+					  						this.piedPage.innerHTML =` ${this.convertSeconds(this.s)} `;
+				  							this.piedPage.innerHTML = ` 
 												<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
-												 reste <strong> ${this.min} : ${this.sec} </strong>  minutes pour récupérer votre vélo à la station
-												 <em class="nameSignResa">${this.response[i].address}</em>.</p>
+												 reste <span id="minutes"><strong> ${this.min}</strong></span> : <span id="secondes"><strong>${this.sec} </strong></span> 
+												  minutes pour récupérer votre vélo à la station
+												 <em class="nameSignResa">${this.response[i].name}</em>.</p>
 											`;
-											if (this.s < 0) {
+					  						if (this.s <= 0) {
 												this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation du vélo est dépassé !</p>`;
 												clearInterval(this.interval);
 											} 
+											// Compte à rebours dans sessionStorage
+											sessionStorage.setItem('minutes', this.min);
+											sessionStorage.setItem('secondes', this.sec);
 										}, 1000);
-									} else  { 
+					  				} else  { 
 	  									this.piedPage.innerHTML = `
 											<h1>Veuillez entrer vos coordonnées</h1>
 										`;
 	  								}
-	  								return false;
 								});
-					  										
-								// Gestion du bouton "Effacez" pour supprimer la signature
+								
+  								// Gestion du bouton "Effacez" pour supprimer la signature
 							    document.querySelector('#reset').addEventListener('click', (e) => {
 							    	this.piedPage.innerHTML = `
 										<h1>Veuillez entrer vos coordonnées</h1>

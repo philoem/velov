@@ -8,10 +8,10 @@ class Slider {
 	}
 	// Méthode initialisant et déclarant les événements du slider
 	declaration() {
-		document.querySelector('#next').addEventListener("click", (event) =>  {
+		document.querySelector('#next').addEventListener("click", () =>  {
 			this.goRight();
 		})
-		document.querySelector('#prev').addEventListener("click", (event) =>  {
+		document.querySelector('#prev').addEventListener("click", () =>  {
 			this.goLeft();
 		})
 		//Défilement avec les touches fléchées gauche et droite

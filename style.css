@@ -90,6 +90,7 @@ input {
 .em1 {
 	font-weight: bold;
 	font-size: 1.2em;
+	font-style: normal;
 }
 .em2 {
 	color: blue;
@@ -130,6 +131,7 @@ input {
 }
 #btn_resa, #reset {
 	box-shadow: 8px 8px 9px #333;
+	margin-bottom: 2px;
 }
 .nameSignResa {
 	color: #0E4;
@@ -139,7 +141,7 @@ input {
 #piedPage {
 	display: block;
 	height: auto;
-	margin-top: 25px;
+	margin-top: 45px;
 	margin-bottom: 5px;
 	border-radius: 12px 12px 12px 12px;
 	color: white;
@@ -160,8 +162,9 @@ h1, #piedPage {
 	font-size: 1.5em;
 }
 /* Pour décaler le footer du formulaire de réservation */
-@media (max-width: 768px) {
+@media (max-width: 420px) {
 	#piedPage {
-		top: 15px;
+		margin-top: 100px;
 	}
+	
 }
