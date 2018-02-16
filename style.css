@@ -159,3 +159,9 @@ h1, #piedPage {
 #timer strong {
 	font-size: 1.5em;
 }
+/* Pour décaler le footer du formulaire de réservation */
+@media (max-width: 768px) {
+	#piedPage {
+		top: 15px;
+	}
+}
