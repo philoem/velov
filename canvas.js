@@ -1,9 +1,10 @@
 function signatureCapture() {
 	let canvas = document.getElementById("signatureCanvas");
-	const context = canvas.getContext("2d");
+	let context = canvas.getContext("2d");
 	
 	canvas.height = 150 ;
-	
+	canvas.width = 350 ;
+
 	context.fillStyle = "#fff";
 	context.strokeStyle = "#343A40";
 	context.lineWidth = 1.6;
@@ -27,6 +28,8 @@ function signatureCapture() {
 	let xyLast = {};
 	let xyAddLast = {};
 	let calculate = false;
+
+	{
 		
 		function remove_event_listeners() {
 			canvas.removeEventListener('mousemove', on_mousemove, false);
@@ -36,7 +39,7 @@ function signatureCapture() {
 
 			document.body.removeEventListener('mouseup', on_mouseup, false);
 			document.body.removeEventListener('touchend', on_mouseup, false);
-		};
+		}
 		function get_board_coords(e) {
 			let x, y;
 
@@ -56,7 +59,7 @@ function signatureCapture() {
 				x : x,
 				y : y
 			};
-		};
+		}
 		function on_mousedown(e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -76,7 +79,7 @@ function signatureCapture() {
 			context.moveTo(xy.x, xy.y);
 			pixels.push(xy.x, xy.y);
 			xyLast = xy;
-		};
+		}
 
 		function on_mousemove(e, finish) {
 			//e.preventDefault();
@@ -103,7 +106,7 @@ function signatureCapture() {
 			xyAddLast = xyAdd;
 			xyLast = xy;
 
-		};
+		}
 
 		function on_mouseup(e) {
 			remove_event_listeners();
@@ -111,9 +114,10 @@ function signatureCapture() {
 			context.stroke();
 			pixels.push('e');
 			calculate = false;
-		};
+		}
+	}
 	canvas.addEventListener('mousedown', on_mousedown, false);
-	canvas.addEventListener('touchstart', on_mousedown, false);
+	canvas.addEventListener('touchmove', on_mousedown, false);
 }
 function signatureClear() {
 	const canvas = document.getElementById("signatureCanvas");

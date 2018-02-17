@@ -32,14 +32,14 @@ class Marker extends Map {
 		this.stationStocked = sessionStorage.getItem('station');
 		this.minutesRecup =sessionStorage.getItem('minutes');
 		this.secondesRecup =sessionStorage.getItem('secondes');
+		
+		clearInterval(this.interval);// PB N°4 Résolu - Ici stoppe le chrono qui se répète autant de fois que l'on déclenche le bouton réservation
 		if (sessionStorage.length < 2) { 
-			sessionStorage.clear();
 			this.piedPage.innerHTML = `
 				<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque à
 				 vélo est fortement recommandé en ville</strong></h1>
 			`;
-
-		} else if (this.minutesRecup == null && this.secondesRecup == null && this.stationStocked == null) { 
+		} else if (this.minutesRecup == null && this.secondesRecup == null && this.stationStocked == null) { // PB N°2 - 
 			sessionStorage.clear();
 			this.piedPage.innerHTML = `
 				<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque à
@@ -220,7 +220,7 @@ class Marker extends Map {
 										<h1>Veuillez entrer vos coordonnées</h1>
 									`;
 							    	return signatureClear(),sessionStorage.clear(), clearInterval(this.interval);
-							    	this.recupData();
+							    	//this.recupData();
 							    });
 							});
 				        // Pas de bouton de réservation s'il n'y plus de vélos dispos avec message 

@@ -124,7 +124,7 @@ input {
 }
 #signatureCanvas {
 	border: 1px solid grey;
-	width: auto;
+	
 	height: 150px;
 	left: 0;
 	margin: auto;
@@ -164,7 +164,10 @@ h1, #piedPage {
 /* Pour décaler le footer du formulaire de réservation */
 @media (max-width: 420px) {
 	#piedPage {
-		margin-top: 100px;
+		margin-top: 50px;
+	}
+	#signatureCanvas {
+		max-width: 300px;
 	}
 	
 }
