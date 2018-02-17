@@ -33,17 +33,37 @@ class Marker extends Map {
 		this.minutesRecup =sessionStorage.getItem('minutes');
 		this.secondesRecup =sessionStorage.getItem('secondes');
 		if (sessionStorage.length < 2) { 
+			sessionStorage.clear();
 			this.piedPage.innerHTML = `
 				<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque à
 				 vélo est fortement recommandé en ville</strong></h1>
 			`;
-		} else {
-			this.piedPage.innerHTML = ` 
-				<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
-				 reste <span id="minutes"><strong> ${this.minutesRecup}</strong></span> : <span id="secondes"><strong>${this.secondesRecup} </strong></span> 
-				  minutes pour récupérer votre vélo à la station
-				 <em class="nameSignResa">${this.stationStocked}</em>.</p>
+
+		} else if (this.minutesRecup == null && this.secondesRecup == null && this.stationStocked == null) { 
+			sessionStorage.clear();
+			this.piedPage.innerHTML = `
+				<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque à
+				 vélo est fortement recommandé en ville</strong></h1>
 			`;
+		}else {
+			this.interval = setInterval(() => {
+				this.s--;
+				this.piedPage.innerHTML =` ${this.convertSeconds(this.s)} `;
+				this.piedPage.innerHTML = ` 
+					<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
+					 reste <span id="minutes"><strong> ${this.min}</strong></span> : <span id="secondes"><strong>${this.sec} </strong></span> 
+					  minutes pour récupérer votre vélo à la station
+					 <em class="nameSignResa">${this.stationStocked}</em>.</p>
+				`;
+					if (this.s <= 0) {
+						this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation
+						 du vélo est dépassé !</p>`;
+						clearInterval(this.interval);
+				} 
+				// Compte à rebours dans sessionStorage
+				sessionStorage.setItem('minutes', this.min);
+				sessionStorage.setItem('secondes', this.sec);
+			}, 1000);
 		}
 	}
 	verifMail() {
@@ -128,7 +148,7 @@ class Marker extends Map {
 					this.marker.addListener('click', (e) => {
 						if (this.tabJson[i].available_bikes >= 1) {
 					  		this.formulaire.style.display = 'block';
-						  	this.formulaire.innerHTML = `
+					  		this.formulaire.innerHTML = `
 					  			<h1 class="pt-5">Informations station</h1>
 						  		<p>${this.response[i].name} ${this.response[i].address}</p>
 						  		<p><strong>Nombre de places de vélos au total</strong> : <em class="em1">${this.response[i].bike_stands}</em></p> 
@@ -140,6 +160,7 @@ class Marker extends Map {
 							sessionStorage.setItem('station', this.response[i].name);
 				        	// Gestion du bouton "Réservez" renvoyant sur le formulaire pour réserver
 				   			document.querySelector('#btn_reserver').addEventListener('click', (e) => {
+						    	clearInterval(this.interval);
 						    	this.formulaire.innerHTML = `
 								   	<form id="myForm">
 										<div class="form-group">
@@ -163,18 +184,17 @@ class Marker extends Map {
 								this.piedPage.innerHTML = `
 									<h1>Veuillez entrer vos coordonnées</h1>
 								`;
+								// Ici la signature dans le canvas
+			  					signatureCapture();
 								// Ici les données stockées dans sessionStorage
 								document.querySelector('#formGroupExampleInput').addEventListener('input', (e) => {
 									sessionStorage.setItem('nom', document.querySelector('#formGroupExampleInput').value);
-							  		
 							  	});
 							  	document.querySelector('#formGroupExampleInput2').addEventListener('input', (e) => {
 									sessionStorage.setItem('mail', document.querySelector('#formGroupExampleInput2').value);
-							  		
 							  	});
 							  	document.querySelector('#signatureCanvas').addEventListener('click', (e) => {
 									sessionStorage.setItem('sign', document.querySelector('#signatureCanvas').value);
-							  		
 							  		// Convertit la signature pour être stockée dans le sessionStorage
 							  		window.sessionStorage.sign = document.querySelector('#signatureCanvas').toDataURL();
 							  		// Ici vérification du format du mail
@@ -187,40 +207,20 @@ class Marker extends Map {
 					  				// Ici prénom, nom et signature obligatoire
 					  				if (sessionStorage.nom != null && sessionStorage.sign != null) {
 					  					// Compte à rebours
-					  					this.interval = setInterval(() => {
-											this.s--;
-					  						this.piedPage.innerHTML =` ${this.convertSeconds(this.s)} `;
-				  							this.piedPage.innerHTML = ` 
-												<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
-												 reste <span id="minutes"><strong> ${this.min}</strong></span> : <span id="secondes"><strong>${this.sec} </strong></span> 
-												  minutes pour récupérer votre vélo à la station
-												 <em class="nameSignResa">${this.response[i].name}</em>.</p>
-											`;
-					  						if (this.s <= 0) {
-												this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation du vélo est dépassé !</p>`;
-												clearInterval(this.interval);
-											} 
-											// Compte à rebours dans sessionStorage
-											sessionStorage.setItem('minutes', this.min);
-											sessionStorage.setItem('secondes', this.sec);
-										}, 1000);
+					  					this.recupData();
 					  				} else  { 
 	  									this.piedPage.innerHTML = `
 											<h1>Veuillez entrer vos coordonnées</h1>
 										`;
 	  								}
 								});
-								
-  								// Gestion du bouton "Effacez" pour supprimer la signature
+								// Gestion du bouton "Effacez" 
 							    document.querySelector('#reset').addEventListener('click', (e) => {
 							    	this.piedPage.innerHTML = `
 										<h1>Veuillez entrer vos coordonnées</h1>
 									`;
 							    	return signatureClear(),sessionStorage.clear(), clearInterval(this.interval);
-							    });
-								// Gestion de la signature dans le canvas
-								document.querySelector('#signatureCanvas').addEventListener('mousedown', (e) => {
-							        return signatureCapture();
+							    	this.recupData();
 							    });
 							});
 				        // Pas de bouton de réservation s'il n'y plus de vélos dispos avec message 

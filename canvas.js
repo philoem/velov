@@ -1,5 +1,5 @@
 function signatureCapture() {
-	const canvas = document.getElementById("signatureCanvas");
+	let canvas = document.getElementById("signatureCanvas");
 	const context = canvas.getContext("2d");
 	
 	canvas.height = 150 ;
@@ -21,32 +21,28 @@ function signatureCapture() {
 	context.fillStyle = "#fff";
 	context.strokeStyle = "#444";
 	
-	
 	let disableSave = true;
 	let pixels = [];
 	let cpixels = [];
 	let xyLast = {};
 	let xyAddLast = {};
 	let calculate = false;
-	
-	//{
+		
 		function remove_event_listeners() {
-			canvas.removeEventListener('mousemove', mousemove, false);
-			canvas.removeEventListener('mouseup', mouseup, false);
-			canvas.removeEventListener('touchmove', mousemove, false);
-			canvas.removeEventListener('touchend', mouseup, false);
+			canvas.removeEventListener('mousemove', on_mousemove, false);
+			canvas.removeEventListener('mouseup', on_mouseup, false);
+			canvas.removeEventListener('touchmove', on_mousemove, false);
+			canvas.removeEventListener('touchend', on_mouseup, false);
 
-			document.body.removeEventListener('mouseup', mouseup, false);
-			document.body.removeEventListener('touchend', mouseup, false);
-		}
-
+			document.body.removeEventListener('mouseup', on_mouseup, false);
+			document.body.removeEventListener('touchend', on_mouseup, false);
+		};
 		function get_board_coords(e) {
 			let x, y;
 
 			if (e.changedTouches && e.changedTouches[0]) {
 				let offsety = canvas.offsetTop || 0;
 				let offsetx = canvas.offsetLeft || 0;
-
 				x = e.changedTouches[0].pageX - offsetx;
 				y = e.changedTouches[0].pageY - offsety;
 			} else if (e.layerX || 0 == e.layerX) {
@@ -56,23 +52,22 @@ function signatureCapture() {
 				x = e.offsetX;
 				y = e.offsetY;
 			}
-
 			return {
 				x : x,
 				y : y
 			};
 		};
-
-		function mousedown(e) {
-			//e.preventDefault();
+		function on_mousedown(e) {
+			e.preventDefault();
+			e.stopPropagation();
 			
-			canvas.addEventListener('mousemove', mousemove, false);
-			canvas.addEventListener('mouseup', mouseup, false);
-			canvas.addEventListener('touchmove', mousemove, false);
-			canvas.addEventListener('touchend', mouseup, false);
+			canvas.addEventListener('mousemove', on_mousemove, false);
+			canvas.addEventListener('mouseup', on_mouseup, false);
+			canvas.addEventListener('touchmove', on_mousemove, false);
+			canvas.addEventListener('touchend', on_mouseup, false);
 
-			document.body.addEventListener('mouseup', mouseup, false);
-			document.body.addEventListener('touchend', mouseup, false);
+			document.body.addEventListener('mouseup', on_mouseup, false);
+			document.body.addEventListener('touchend', on_mouseup, false);
 
 			empty = false;
 			let xy = get_board_coords(e);
@@ -83,7 +78,7 @@ function signatureCapture() {
 			xyLast = xy;
 		};
 
-		function mousemove(e, finish) {
+		function on_mousemove(e, finish) {
 			//e.preventDefault();
 			
 			let xy = get_board_coords(e);
@@ -110,26 +105,20 @@ function signatureCapture() {
 
 		};
 
-		function mouseup(e) {
+		function on_mouseup(e) {
 			remove_event_listeners();
 			disableSave = false;
 			context.stroke();
 			pixels.push('e');
 			calculate = false;
 		};
-
-	//}//end
-
-	canvas.addEventListener('mousedown', mousedown, false);
-	canvas.addEventListener('touchstart', mousedown, false);
+	canvas.addEventListener('mousedown', on_mousedown, false);
+	canvas.addEventListener('touchstart', on_mousedown, false);
 }
 function signatureClear() {
 	const canvas = document.getElementById("signatureCanvas");
 	const context = canvas.getContext("2d");
-	const btn = document.getElementById('reset');
-	btn.addEventListener('click', function(e) {
-		context.clearRect(0, 0, canvas.width, canvas.height);
-	});
+	context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 
