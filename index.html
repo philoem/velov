@@ -5,7 +5,7 @@
 		<title>Location vélos</title>
 		<meta name="description" content="Location de vélos"/>
 <!--POUR LA VUE SUR LES SMARTPHONES, LA LARGEUR DE L'ECRAN=LARGEUR ECRAN | L'UTILISATEUR NE PEUT PAS ZOOMER SUR L'ECRAN -->
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
 <!-- PROTOCOLE OPEN GRAPH POUR ETRE VU DES RESEAUX SOCIAUX(FB, ETC) --> 
 		<meta property="og:title" content="Vélo'v : location de vélos à Lyon" />
 		<meta property="og:description" content="Location de vélos dans la ville de Lyon" />
@@ -55,7 +55,9 @@
 <!-- PIED DE PAGE -->		
 			<div class="container" id="footer">
 				<footer  class="row justify-content-center">
-					<div class="col-lg-12" id="piedPage"></div>
+					<div class="col-lg-12" id="piedPage">
+						<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque à vélo est fortement recommandé en ville</strong></h1>
+					</div>
 				</footer>
 			</div>
 		</div>
@@ -69,9 +71,10 @@
 		<script src="slider.js"></script>		
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDScYkZVXEttgDmYjC7kHCcWdmu8kp6Q08" type="text/javascript"></script>
 		<script src="map2.js"></script>
-		<script src="canvas.js"></script>
+		<script src="canvas3.js"></script>
 		<script>
 			window.addEventListener('load', () => {const velovMap = new Marker()});
 		</script>
+		
 	</body>
 </html>

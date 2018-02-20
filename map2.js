@@ -13,57 +13,91 @@ class Map {
 class Marker extends Map {
 	constructor() {
 		super();
-		this.s = 1201;// Temps correspondant à 20 minutes
+		this.secondTimestamp = new Date();// Initialisation de la date 
+		this.firstTimestamp = new Date();
+		this.diffTimestamp = (this.secondTimestamp - this.firstTimestamp) / 1000 ; // On fait la soustraction pour obtenir les secondes qui s'écoulent
+		this.s = 1201;// Temps en secondes correspondant à 20 minutes
 		this.min = Math.floor(this.s / 60);
 		this.sec = this.s % 60;
+		this.s2 = this.s - this.diffTimestamp;
+		this.min2 = Math.floor(this.s2 / 60);
+		this.sec2 = this.s2 % 60;
+		console.log(this.s2);
 		this.formulaire = document.querySelector('#formulaire');
 		this.piedPage = document.querySelector('#piedPage');
+		this.nomRecup = sessionStorage.getItem('nom');
+		this.mailRecup = sessionStorage.getItem('mail');
+		this.signRecup = sessionStorage.getItem('sign');
+		this.stationStocked = sessionStorage.getItem('station');
+		this.minutesRecup = sessionStorage.getItem('minutes');
+		this.secondesRecup = sessionStorage.getItem('secondes');
 
 		this.recupData();
-		this.convertSeconds();
 		this.icones();
 		this.loadStation();
 	}
-	// Récupération des données dans le sessionStorage
+	// Récupération du compte à rebours avec les données stockées dans le sessionStorage
 	recupData() {
-		this.nomRecup = sessionStorage.getItem('nom');
-		this.mailRecup = sessionStorage.getItem('mail');
-		this.signRecup =sessionStorage.getItem('sign');
-		this.stationStocked = sessionStorage.getItem('station');
-		this.minutesRecup =sessionStorage.getItem('minutes');
-		this.secondesRecup =sessionStorage.getItem('secondes');
-		
-		clearInterval(this.interval);// PB N°4 Résolu - Ici stoppe le chrono qui se répète autant de fois que l'on déclenche le bouton réservation
-		if (sessionStorage.length < 2) { 
-			this.piedPage.innerHTML = `
-				<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque à
-				 vélo est fortement recommandé en ville</strong></h1>
-			`;
-		} else if (this.minutesRecup == null && this.secondesRecup == null && this.stationStocked == null) { // PB N°2 - 
-			sessionStorage.clear();
-			this.piedPage.innerHTML = `
-				<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque à
-				 vélo est fortement recommandé en ville</strong></h1>
-			`;
-		}else {
-			this.interval = setInterval(() => {
-				this.s--;
-				this.piedPage.innerHTML =` ${this.convertSeconds(this.s)} `;
+		sessionStorage.setItem('secondTimestamp', this.secondTimestamp);
+		if (this.nomRecup != null && this.stationStocked != null) {
+			this.interval2 = setInterval( () => {
+				this.s2--;
+				this.piedPage.innerHTML =` ${this.convertSeconds2(this.s2)} `;
+				console.log(this.s2);
 				this.piedPage.innerHTML = ` 
 					<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
-					 reste <span id="minutes"><strong> ${this.min}</strong></span> : <span id="secondes"><strong>${this.sec} </strong></span> 
-					  minutes pour récupérer votre vélo à la station
-					 <em class="nameSignResa">${this.stationStocked}</em>.</p>
+					 reste <span id="minutes"><strong> ${this.min2}</strong></span> : <span id="secondes"><strong>${this.sec2} </strong></span> 
+					  minutes pour récupérer votre vélo à la stationSSS
+					 <em class="nameSignResa">${sessionStorage.getItem('station')}</em>.</p>
 				`;
-					if (this.s <= 0) {
-						this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation
-						 du vélo est dépassé !</p>`;
-						clearInterval(this.interval);
-				} 
-				// Compte à rebours dans sessionStorage
-				sessionStorage.setItem('minutes', this.min);
-				sessionStorage.setItem('secondes', this.sec);
+				if (this.s2 === 0) {
+					this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation
+					 du vélo est dépassé !</p>`;
+					clearInterval(this.interval2);
+				}
 			}, 1000);
+		}
+	}
+	// Compte à rebours
+	countDown() {
+		this.interval = setInterval( () => {
+			this.s--;
+			this.piedPage.innerHTML =` ${this.convertSeconds(this.s)} `;
+			this.piedPage.innerHTML = ` 
+				<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
+				 reste <span id="minutes"><strong> ${this.min}</strong></span> : <span id="secondes"><strong>${this.sec} </strong></span> 
+				  minutes pour récupérer votre vélo à la station
+				 <em class="nameSignResa">${sessionStorage.getItem('station')}</em>.</p>
+			`;
+			if (this.s <= 0) {
+				this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation
+				 du vélo est dépassé !</p>`;
+				clearInterval(this.interval);
+			} 
+			// Compte à rebours dans sessionStorage
+			sessionStorage.setItem('minutes', this.min);
+			sessionStorage.setItem('secondes', this.sec);
+		}, 1000);
+	}
+	// Pour le compte à rebours
+	convertSeconds() {
+		this.min = Math.floor(this.s / 60);
+		if (this.min < 10) {
+			this.min = '0' + this.min;
+		}	
+		this.sec = this.s % 60;
+		if (this.sec < 10) {
+			this.sec = '0' + this.sec;
+		}
+	}
+	convertSeconds2() {
+		this.min2 = Math.floor(this.s2 / 60);
+		if (this.min2 < 10) {
+			this.min2 = '0' + this.min2;
+		}	
+		this.sec2 = this.s2 % 60;
+		if (this.sec2 < 10) {
+			this.sec2 = '0' + this.sec2;
 		}
 	}
 	verifMail() {
@@ -79,17 +113,6 @@ class Marker extends Map {
 			`;
 		}
 	}
-	// Pour le compte à rebours
-	convertSeconds() {
-		this.min = Math.floor(this.s / 60);
-		if (this.min < 10) {
-			this.min = '0' + this.min;
-		}	
-		this.sec = this.s % 60;
-		if (this.sec < 10) {
-			this.sec = '0' + this.sec;
-		}
-	}	
 	icones() {
 		this.iconeVerte = {
   			url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
@@ -158,9 +181,14 @@ class Marker extends Map {
 					        `;
 							// Stockage de l'adresse de la station
 							sessionStorage.setItem('station', this.response[i].name);
+							this.piedPage.innerHTML = `
+								<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque
+								 à vélo est fortement recommandé en ville</strong></h1>
+							`;
 				        	// Gestion du bouton "Réservez" renvoyant sur le formulaire pour réserver
 				   			document.querySelector('#btn_reserver').addEventListener('click', (e) => {
 						    	clearInterval(this.interval);
+						    	clearInterval(this.interval2);
 						    	this.formulaire.innerHTML = `
 								   	<form id="myForm">
 										<div class="form-group">
@@ -204,13 +232,18 @@ class Marker extends Map {
 								// Gestion du bouton "Réservez votre vélo"
 					  			document.querySelector('#btn_resa').addEventListener('click', (e) => {
 					  				e.preventDefault();
+									clearInterval(this.interval);// PB N°4 Résolu - Ici stoppe le chrono qui se répète autant de fois que l'on déclenche le bouton réservation
+					  				// Ici on récupère la date pour la gestion du compte à rebours
+					  				this.firstTimestamp = new Date();
+					  				sessionStorage.setItem('firstTimestamp', this.firstTimestamp);
+					  				console.log(this.firstTimestamp);
 					  				// Ici prénom, nom et signature obligatoire
-					  				if (sessionStorage.nom != null && sessionStorage.sign != null) {
+					  				if (sessionStorage.nom != null && sessionStorage.sign != null && sessionStorage.station != null) {
 					  					// Compte à rebours
-					  					this.recupData();
+					  					this.countDown();
 					  				} else  { 
 	  									this.piedPage.innerHTML = `
-											<h1>Veuillez entrer vos coordonnées</h1>
+											<h1>Veuillez entrer vos coordonnées ou sélectionner une station</h1>
 										`;
 	  								}
 								});
