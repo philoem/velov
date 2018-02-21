@@ -44,7 +44,7 @@ class Marker extends Map {
 				this.piedPage.innerHTML = ` 
 					<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${this.nomRecup}</em>, il vous
 					 reste <span id="minutes"><strong> ${this.min2}</strong></span> : <span id="secondes"><strong>${this.sec2} </strong></span> 
-					  minutes pour récupérer votre vélo à la stationSSS
+					  minutes pour récupérer votre vélo à la station
 					 <em class="nameSignResa">${this.stationStocked}</em>.</p>
 				`;
 				if (this.s2 === 0) {
@@ -177,7 +177,7 @@ class Marker extends Map {
 						  		<p><strong>Nombre de places de vélos au total</strong> : <em class="em1">${this.response[i].bike_stands}</em></p> 
 					        	<p><strong>Nombre de places vides pour vélos</strong> : <em class="em2">${this.response[i].available_bike_stands}</em></p>
 					        	<p><strong>Nombre de Vélos disponibles</strong> : <em class="em3">${this.response[i].available_bikes}</em></p>
-					        	<input class="btn btn-secondary btn-block col-lg-8 form-control" type="submit" id="btn_reserver" value="Réservez">
+					        	<input class="btn btn-primary btn-block col-lg-8 form-control" type="submit" id="btn_reserver" value="Réservez">
 					        `;
 							// Stockage de l'adresse de la station
 							sessionStorage.setItem('station', this.response[i].name);
@@ -205,8 +205,8 @@ class Marker extends Map {
 										    <canvas class="row col-xs-12" id="signatureCanvas">Ici votre signature</canvas><br>
 										</div>
 										<div class=" row justify-content-center">
-											<button class="btn btn-primary btn-block col-xs-8 col-lg-8 " type="reset" id="reset" value="">Effacez</button>
-											<button class="btn btn-secondary btn-block col-xs-8 col-lg-8 form-control " type="submit" id="btn_resa" value="">Réservez votre vélo</button>
+											<button class="btn btn-secondary btn-block col-xs-8 col-lg-8 " type="reset" id="reset" value="">Effacez</button>
+											<button class="btn btn-primary btn-block col-xs-8 col-lg-8 form-control " type="submit" id="btn_resa" value="">Réservez votre vélo</button>
 										</div>
 									</form>
 								`;
@@ -223,6 +223,14 @@ class Marker extends Map {
 									sessionStorage.setItem('mail', document.querySelector('#formGroupExampleInput2').value);
 							  	});
 							  	document.querySelector('#signatureCanvas').addEventListener('click', (e) => {
+									sessionStorage.setItem('sign', document.querySelector('#signatureCanvas').value);
+							  		// Convertit la signature pour être stockée dans le sessionStorage
+							  		window.sessionStorage.sign = document.querySelector('#signatureCanvas').toDataURL();
+							  		// Ici vérification du format du mail
+									this.verifMail();
+							  	});
+							  	// Ici enregistrement de la signature dans le sessionStorage via l'événement "touchstart"
+							  	document.querySelector('#signatureCanvas').addEventListener('touchstart', (e) => {
 									sessionStorage.setItem('sign', document.querySelector('#signatureCanvas').value);
 							  		// Convertit la signature pour être stockée dans le sessionStorage
 							  		window.sessionStorage.sign = document.querySelector('#signatureCanvas').toDataURL();
@@ -247,7 +255,7 @@ class Marker extends Map {
 								// Gestion du bouton "Effacez" 
 							    document.querySelector('#reset').addEventListener('click', (e) => {
 							    	this.piedPage.innerHTML = `
-										<h1>Veuillez entrer vos coordonnées</h1>
+										<h1>Veuillez entrer vos coordonnées ou sélectionner une station</h1>
 									`;
 							    	return signatureClear(),sessionStorage.clear(), clearInterval(this.interval);
 							    });
