@@ -1,15 +1,15 @@
 function signatureCapture() {
-	var canvas = document.getElementById("signatureCanvas");
-	var ctx = canvas.getContext("2d");
+	let canvas = document.querySelector("#signatureCanvas");
+	let ctx = canvas.getContext("2d");
 	canvas.height = 150 ;
 	canvas.width = 350 ; 
 	ctx.fillStyle = "#007BFF";
 	ctx.strokeStyle = "#007BFF";
 	ctx.lineWidth = 2;
 
-	var drawing = false;
-	var mousePos = { x:0, y:0 };
-	var lastPos = mousePos;
+	let drawing = false;
+	let mousePos = { x:0, y:0 };
+	let lastPos = mousePos;
 
 	canvas.addEventListener("mousedown", function (e) {
         drawing = true;
@@ -24,7 +24,7 @@ function signatureCapture() {
 
 	// position de la souris dans le canvas
 	function getMousePos(canvasDom, mouseEvent) {
-		var rect = canvasDom.getBoundingClientRect();
+		let rect = canvasDom.getBoundingClientRect();
 		return {
 		    x: mouseEvent.clientX - rect.left,
 		    y: mouseEvent.clientY - rect.top
@@ -58,8 +58,8 @@ function signatureCapture() {
 	// Gestion des événements tactiles
 	canvas.addEventListener("touchstart", function (e) {
         mousePos = getTouchPos(canvas, e);
-		var touch = e.touches[0];
-		var mouseEvent = new MouseEvent("mousedown", {
+		let touch = e.touches[0];
+		let mouseEvent = new MouseEvent("mousedown", {
 			clientX: touch.clientX,
 			clientY: touch.clientY
   		});
@@ -67,12 +67,12 @@ function signatureCapture() {
 	}, false);
 
 	canvas.addEventListener("touchend", function (e) {
-		var mouseEvent = new MouseEvent("mouseup", {});
+		let mouseEvent = new MouseEvent("mouseup", {});
 		canvas.dispatchEvent(mouseEvent);
 	}, false);
 	canvas.addEventListener("touchmove", function (e) {
-		var touch = e.touches[0];
-		var mouseEvent = new MouseEvent("mousemove", {
+		let touch = e.touches[0];
+		let mouseEvent = new MouseEvent("mousemove", {
 			clientX: touch.clientX,
 			clientY: touch.clientY
 		});
@@ -81,7 +81,7 @@ function signatureCapture() {
 
 	// Gestion de la position du toucher dans le canvas
 	function getTouchPos(canvasDom, touchEvent) {
-		var rect = canvasDom.getBoundingClientRect();
+		let rect = canvasDom.getBoundingClientRect();
 		return {
 			x: touchEvent.touches[0].clientX - rect.left,
 			y: touchEvent.touches[0].clientY - rect.top

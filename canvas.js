@@ -38,11 +38,11 @@ function signatureCapture() {
 		function remove_event_listeners() {
 			canvas.removeEventListener('mousemove', on_mousemove, false);
 			canvas.removeEventListener('mouseup', on_mouseup, false);
-			canvas.removeEventListener('touchmove', on_mousemove, {passive: true, capture:false});
-			canvas.removeEventListener('touchend', on_mouseup, {passive: true, capture:false});
+			canvas.removeEventListener('touchmove', on_mousemove, {passive: false, capture: false});
+			canvas.removeEventListener('touchend', on_mouseup, {passive: false, capture: false});
 
 			document.body.removeEventListener('mouseup', on_mouseup, false);
-			document.body.removeEventListener('touchend', on_mouseup, {passive: true, capture:false});
+			document.body.removeEventListener('touchend', on_mouseup, {passive: false, capture: false});
 		}
 
 		function get_board_coords(e) {
@@ -69,16 +69,16 @@ function signatureCapture() {
 		};
 
 		function on_mousedown(e) {
-			//e.preventDefault();
+			e.preventDefault();
 			e.stopPropagation();
 
 			canvas.addEventListener('mousemove', on_mousemove, false);
 			canvas.addEventListener('mouseup', on_mouseup, false);
-			canvas.addEventListener('touchmove', on_mousemove, {passive: true, capture:false});
-			canvas.addEventListener('touchend', on_mouseup, {passive: true, capture:false});
+			canvas.addEventListener('touchmove', on_mousemove, {passive: false, capture: false});
+			canvas.addEventListener('touchend', on_mouseup, {passive: false, capture: false});
 
 			document.body.addEventListener('mouseup', on_mouseup, false);
-			document.body.addEventListener('touchend', on_mouseup, {passive: true, capture:false});
+			document.body.addEventListener('touchend', on_mouseup, {passive: false, capture: false});
 
 			empty = false;
 			var xy = get_board_coords(e);
@@ -90,7 +90,7 @@ function signatureCapture() {
 		};
 
 		function on_mousemove(e, finish) {
-			//e.preventDefault();
+			e.preventDefault();
 			e.stopPropagation();
 
 			var xy = get_board_coords(e);
@@ -129,5 +129,5 @@ function signatureCapture() {
 
 	
 	canvas.addEventListener('mousedown', on_mousedown, false);
-	canvas.addEventListener('touchstart', on_mousedown, false);
+	canvas.addEventListener('touchstart', on_mousedown, {passive: false, capture: false});
 }

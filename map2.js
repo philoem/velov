@@ -1,4 +1,9 @@
-// classe VelovMap
+/*--------------------------------------------*
+|		DWJ - Projet 3 - OpenClassRoom 		  |			
+|			  Philippe Chamard			      |
+|		    Réalisé en février 2018			  |
+*---------------------------------------------*/
+/* Vélo'V - Réservations de vélos dans différentes stations de la ville de Lyon */
 class Map {
 	constructor() {
 		this.initMap();
@@ -13,48 +18,42 @@ class Map {
 class Marker extends Map {
 	constructor() {
 		super();
-		this.secondTimestamp = new Date();// Initialisation de la date 
-		this.firstTimestamp = new Date();
-		this.diffTimestamp = (this.secondTimestamp - this.firstTimestamp) / 1000 ; // On fait la soustraction pour obtenir les secondes qui s'écoulent
 		this.s = 1201;// Temps en secondes correspondant à 20 minutes
 		this.min = Math.floor(this.s / 60);
 		this.sec = this.s % 60;
-		this.s2 = this.s - this.diffTimestamp;
+		this.minx = sessionStorage.getItem('minutes')* 60;
+		this.secx = parseInt(sessionStorage.getItem('secondes'));
+		this.s2 = (this.minx + this.secx);
 		this.min2 = Math.floor(this.s2 / 60);
 		this.sec2 = this.s2 % 60;
-		console.log(this.s2);
 		this.formulaire = document.querySelector('#formulaire');
 		this.piedPage = document.querySelector('#piedPage');
 		this.nomRecup = sessionStorage.getItem('nom');
-		this.mailRecup = sessionStorage.getItem('mail');
-		this.signRecup = sessionStorage.getItem('sign');
 		this.stationStocked = sessionStorage.getItem('station');
-		this.minutesRecup = sessionStorage.getItem('minutes');
-		this.secondesRecup = sessionStorage.getItem('secondes');
-
+		
 		this.recupData();
 		this.icones();
 		this.loadStation();
 	}
 	// Récupération du compte à rebours avec les données stockées dans le sessionStorage
 	recupData() {
-		sessionStorage.setItem('secondTimestamp', this.secondTimestamp);
 		if (this.nomRecup != null && this.stationStocked != null) {
 			this.interval2 = setInterval( () => {
 				this.s2--;
 				this.piedPage.innerHTML =` ${this.convertSeconds2(this.s2)} `;
-				console.log(this.s2);
 				this.piedPage.innerHTML = ` 
-					<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
+					<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${this.nomRecup}</em>, il vous
 					 reste <span id="minutes"><strong> ${this.min2}</strong></span> : <span id="secondes"><strong>${this.sec2} </strong></span> 
 					  minutes pour récupérer votre vélo à la stationSSS
-					 <em class="nameSignResa">${sessionStorage.getItem('station')}</em>.</p>
+					 <em class="nameSignResa">${this.stationStocked}</em>.</p>
 				`;
 				if (this.s2 === 0) {
 					this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation
 					 du vélo est dépassé !</p>`;
 					clearInterval(this.interval2);
 				}
+				sessionStorage.setItem('minutes', this.min2);
+				sessionStorage.setItem('secondes', this.sec2);
 			}, 1000);
 		}
 	}
@@ -79,7 +78,7 @@ class Marker extends Map {
 			sessionStorage.setItem('secondes', this.sec);
 		}, 1000);
 	}
-	// Pour le compte à rebours
+	// Pour le compte à rebours initial
 	convertSeconds() {
 		this.min = Math.floor(this.s / 60);
 		if (this.min < 10) {
@@ -90,6 +89,7 @@ class Marker extends Map {
 			this.sec = '0' + this.sec;
 		}
 	}
+	// Pour le compte à rebours après rechargement de la page
 	convertSeconds2() {
 		this.min2 = Math.floor(this.s2 / 60);
 		if (this.min2 < 10) {
@@ -187,6 +187,7 @@ class Marker extends Map {
 							`;
 				        	// Gestion du bouton "Réservez" renvoyant sur le formulaire pour réserver
 				   			document.querySelector('#btn_reserver').addEventListener('click', (e) => {
+						    	// Le compte à rebours s'arrête quand on clique sur "Réserver"
 						    	clearInterval(this.interval);
 						    	clearInterval(this.interval2);
 						    	this.formulaire.innerHTML = `
@@ -231,12 +232,8 @@ class Marker extends Map {
 													
 								// Gestion du bouton "Réservez votre vélo"
 					  			document.querySelector('#btn_resa').addEventListener('click', (e) => {
-					  				e.preventDefault();
-									clearInterval(this.interval);// PB N°4 Résolu - Ici stoppe le chrono qui se répète autant de fois que l'on déclenche le bouton réservation
-					  				// Ici on récupère la date pour la gestion du compte à rebours
-					  				this.firstTimestamp = new Date();
-					  				sessionStorage.setItem('firstTimestamp', this.firstTimestamp);
-					  				console.log(this.firstTimestamp);
+					  				e.preventDefault();// Evite le rafraîchissement de la page
+									clearInterval(this.interval);// Ici stoppe le chrono qui se répète autant de fois que l'on déclenche le bouton réservation
 					  				// Ici prénom, nom et signature obligatoire
 					  				if (sessionStorage.nom != null && sessionStorage.sign != null && sessionStorage.station != null) {
 					  					// Compte à rebours
@@ -253,10 +250,9 @@ class Marker extends Map {
 										<h1>Veuillez entrer vos coordonnées</h1>
 									`;
 							    	return signatureClear(),sessionStorage.clear(), clearInterval(this.interval);
-							    	//this.recupData();
 							    });
 							});
-				        // Pas de bouton de réservation s'il n'y plus de vélos dispos avec message 
+				        // Pas de bouton de réservation s'il n'y plus de vélos dispos, avec message dans le footer
 					    } else if (this.tabJson[i].available_bikes === 0) {
 				    		this.formulaire.style.display = 'block';
 				    		this.formulaire.innerHTML = `
