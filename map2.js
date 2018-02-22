@@ -35,6 +35,23 @@ class Marker extends Map {
 		this.icones();
 		this.loadStation();
 	}
+	// Ici méthodes affichages messages dans le footer
+	msgPutName() {
+		this.piedPage.innerHTML = `
+			<h1>Veuillez entrer vos coordonnées ou sélectionner une station</h1>
+		`;
+	}
+	msgChronoIsOver() {
+		this.piedPage.innerHTML =`
+			<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation du vélo est dépassé !</p>
+		`;
+	}
+	msgPortCasque() {
+		this.piedPage.innerHTML = `
+			<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque
+			 à vélo est fortement recommandé en ville</strong></h1>
+		`;
+	}
 	// Récupération du compte à rebours avec les données stockées dans le sessionStorage
 	recupData() {
 		if (this.nomRecup != null && this.stationStocked != null) {
@@ -48,8 +65,7 @@ class Marker extends Map {
 					 <em class="nameSignResa">${this.stationStocked}</em>.</p>
 				`;
 				if (this.s2 === 0) {
-					this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation
-					 du vélo est dépassé !</p>`;
+					this.msgChronoIsOver();
 					clearInterval(this.interval2);
 				}
 				sessionStorage.setItem('minutes', this.min2);
@@ -69,8 +85,7 @@ class Marker extends Map {
 				 <em class="nameSignResa">${sessionStorage.getItem('station')}</em>.</p>
 			`;
 			if (this.s <= 0) {
-				this.piedPage.innerHTML =`<p id="timer" class="justify-content-center col-xs-12">Le temps de la réservation
-				 du vélo est dépassé !</p>`;
+				this.msgChronoIsOver();
 				clearInterval(this.interval);
 			} 
 			// Compte à rebours dans sessionStorage
@@ -181,10 +196,7 @@ class Marker extends Map {
 					        `;
 							// Stockage de l'adresse de la station
 							sessionStorage.setItem('station', this.response[i].name);
-							this.piedPage.innerHTML = `
-								<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque
-								 à vélo est fortement recommandé en ville</strong></h1>
-							`;
+							this.msgPortCasque();
 				        	// Gestion du bouton "Réservez" renvoyant sur le formulaire pour réserver
 				   			document.querySelector('#btn_reserver').addEventListener('click', (e) => {
 						    	// Le compte à rebours s'arrête quand on clique sur "Réserver"
@@ -210,9 +222,7 @@ class Marker extends Map {
 										</div>
 									</form>
 								`;
-								this.piedPage.innerHTML = `
-									<h1>Veuillez entrer vos coordonnées</h1>
-								`;
+								this.msgPutName();
 								// Ici la signature dans le canvas
 			  					signatureCapture();
 								// Ici les données stockées dans sessionStorage
@@ -247,16 +257,12 @@ class Marker extends Map {
 					  					// Compte à rebours
 					  					this.countDown();
 					  				} else  { 
-	  									this.piedPage.innerHTML = `
-											<h1>Veuillez entrer vos coordonnées ou sélectionner une station</h1>
-										`;
+	  									this.msgPutName();
 	  								}
 								});
 								// Gestion du bouton "Effacez" 
 							    document.querySelector('#reset').addEventListener('click', (e) => {
-							    	this.piedPage.innerHTML = `
-										<h1>Veuillez entrer vos coordonnées ou sélectionner une station</h1>
-									`;
+							    	this.msgPutName();
 							    	return signatureClear(),sessionStorage.clear(), clearInterval(this.interval);
 							    });
 							});
@@ -271,10 +277,7 @@ class Marker extends Map {
 						        <p><strong>Nombre de Vélos disponibles</strong> : <em class="em3">${this.response[i].available_bikes}</em></p>
 						        <h3 id="messageAlerte">Vous ne pouvez pas réserver de vélo pour le moment. Merci pour votre compréhension.<h3>
 					        `;
-					        this.piedPage.innerHTML = `
-								<h1 class="col-lg-12 col-xs-12"><strong>La ville de Lyon vous informe que le port du casque
-								 à vélo est fortement recommandé en ville</strong></h1>
-							`;
+					        this.msgPortCasque();
 				    	} 
 				    });
 				}
