@@ -71,6 +71,8 @@ class Marker extends Map {
 				sessionStorage.setItem('minutes', this.min2);
 				sessionStorage.setItem('secondes', this.sec2);
 			}, 1000);
+		} else {
+			return this.msgPortCasque();
 		}
 	}
 	// Compte à rebours
