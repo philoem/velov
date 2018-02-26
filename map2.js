@@ -19,7 +19,7 @@ class Marker extends Map {
 	constructor() {
 		super();
 		this.s = 1201;// Temps en secondes correspondant à 20 minutes
-		this.min = Math.floor(this.s / 60);
+		this.min = Math.floor(this.s / 60);;
 		this.sec = this.s % 60;
 		this.minx = sessionStorage.getItem('minutes')* 60;
 		this.secx = parseInt(sessionStorage.getItem('secondes'));
@@ -34,6 +34,10 @@ class Marker extends Map {
 		this.recupData();
 		this.icones();
 		this.loadStation();
+	}
+	// Ici suppression des données dans le sessionStorage en ne laissant que celle de la station
+	removeData() {
+		return sessionStorage.removeItem('nom'), sessionStorage.removeItem('minutes'), sessionStorage.removeItem('secondes'), sessionStorage.removeItem('sign'), sessionStorage.removeItem('mail');
 	}
 	// Ici méthodes affichages messages dans le footer
 	msgPutName() {
@@ -61,7 +65,7 @@ class Marker extends Map {
 				this.piedPage.innerHTML = ` 
 					<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${this.nomRecup}</em>, il vous
 					 reste <span id="minutes"><strong> ${this.min2}</strong></span> : <span id="secondes"><strong>${this.sec2} </strong></span> 
-					  minutes pour récupérer votre vélo à la station
+					  minutes pour récupérer votre vélo à la stationSSSSSSS
 					 <em class="nameSignResa">${this.stationStocked}</em>.</p>
 				`;
 				if (this.s2 === 0) {
@@ -77,23 +81,27 @@ class Marker extends Map {
 	}
 	// Compte à rebours
 	countDown() {
-		this.interval = setInterval( () => {
-			this.s--;
-			this.piedPage.innerHTML =` ${this.convertSeconds(this.s)} `;
-			this.piedPage.innerHTML = ` 
-				<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
-				 reste <span id="minutes"><strong> ${this.min}</strong></span> : <span id="secondes"><strong>${this.sec} </strong></span> 
-				  minutes pour récupérer votre vélo à la station
-				 <em class="nameSignResa">${sessionStorage.getItem('station')}</em>.</p>
-			`;
-			if (this.s <= 0) {
-				this.msgChronoIsOver();
-				clearInterval(this.interval);
-			} 
-			// Compte à rebours dans sessionStorage
-			sessionStorage.setItem('minutes', this.min);
-			sessionStorage.setItem('secondes', this.sec);
-		}, 1000);
+		this.s = 1201;
+		if (sessionStorage.minutes === 0 || sessionStorage.minutes == null && sessionStorage.secondes === 0 || sessionStorage.secondes == null) {
+			this.interval = setInterval( () => {
+				this.s--;
+				this.piedPage.innerHTML =` ${this.convertSeconds(this.s)} `;
+				this.piedPage.innerHTML = ` 
+					<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${sessionStorage.getItem('nom')}</em>, il vous
+					 reste <span id="minutes"><strong> ${this.min}</strong></span> : <span id="secondes"><strong>${this.sec} </strong></span> 
+					  minutes pour récupérer votre vélo à la station
+					 <em class="nameSignResa">${sessionStorage.getItem('station')}</em>.</p>
+				`;
+				if (this.s === 0) {
+					this.msgChronoIsOver();
+					clearInterval(this.interval);
+				} 
+				// Compte à rebours dans sessionStorage
+				sessionStorage.setItem('minutes', this.min);
+				sessionStorage.setItem('secondes', this.sec);
+			}, 1000);
+			//location.reload();
+		}
 	}
 	// Pour le compte à rebours initial
 	convertSeconds() {
@@ -186,6 +194,9 @@ class Marker extends Map {
 			  		} 
 					// Gestion des événements sur les marqueurs avec l'affichage des formulaires
 					this.marker.addListener('click', (e) => {
+						sessionStorage.removeItem('minutes'), sessionStorage.removeItem('secondes');
+						// Stockage de l'adresse de la station
+						sessionStorage.setItem('station', this.response[i].name);
 						if (this.tabJson[i].available_bikes >= 1) {
 					  		this.formulaire.style.display = 'block';
 					  		this.formulaire.innerHTML = `
@@ -196,14 +207,13 @@ class Marker extends Map {
 					        	<p><strong>Nombre de Vélos disponibles</strong> : <em class="em3">${this.response[i].available_bikes}</em></p>
 					        	<input class="btn btn-primary btn-block col-lg-8 form-control" type="submit" id="btn_reserver" value="Réservez">
 					        `;
-							// Stockage de l'adresse de la station
-							sessionStorage.setItem('station', this.response[i].name);
 							this.msgPortCasque();
 				        	// Gestion du bouton "Réservez" renvoyant sur le formulaire pour réserver
 				   			document.querySelector('#btn_reserver').addEventListener('click', (e) => {
 						    	// Le compte à rebours s'arrête quand on clique sur "Réserver"
 						    	clearInterval(this.interval);
 						    	clearInterval(this.interval2);
+						    	this.removeData();
 						    	this.formulaire.innerHTML = `
 								   	<form id="myForm">
 										<div class="form-group">
@@ -249,7 +259,6 @@ class Marker extends Map {
 							  		// Ici vérification du format du mail
 									this.verifMail();
 							  	});
-													
 								// Gestion du bouton "Réservez votre vélo"
 					  			document.querySelector('#btn_resa').addEventListener('click', (e) => {
 					  				e.preventDefault();// Evite le rafraîchissement de la page
@@ -258,14 +267,17 @@ class Marker extends Map {
 					  				if (sessionStorage.nom != null && sessionStorage.sign != null && sessionStorage.station != null) {
 					  					// Compte à rebours
 					  					this.countDown();
-					  				} else  { 
+					  				} else if (sessionStorage.minutes == null && sessionStorage.secondes == null) {
+					  					this.countDown();
+					  				}else  { 
 	  									this.msgPutName();
 	  								}
 								});
 								// Gestion du bouton "Effacez" 
 							    document.querySelector('#reset').addEventListener('click', (e) => {
 							    	this.msgPutName();
-							    	return signatureClear(),sessionStorage.clear(), clearInterval(this.interval);
+							    	this.removeData();
+							    	return signatureClear(), clearInterval(this.interval), clearInterval(this.interval2);
 							    });
 							});
 				        // Pas de bouton de réservation s'il n'y plus de vélos dispos, avec message dans le footer
