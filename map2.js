@@ -65,7 +65,7 @@ class Marker extends Map {
 				this.piedPage.innerHTML = ` 
 					<p id="timer" class="justify-content-center col-xs-12"><em class="nameSignResa">${this.nomRecup}</em>, il vous
 					 reste <span id="minutes"><strong> ${this.min2}</strong></span> : <span id="secondes"><strong>${this.sec2} </strong></span> 
-					  minutes pour récupérer votre vélo à la stationSSSSSSS
+					  minutes pour récupérer votre vélo à la station
 					 <em class="nameSignResa">${this.stationStocked}</em>.</p>
 				`;
 				if (this.s2 === 0) {
