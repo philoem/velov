@@ -267,9 +267,7 @@ class Marker extends Map {
 					  				if (sessionStorage.nom != null && sessionStorage.sign != null && sessionStorage.station != null) {
 					  					// Compte à rebours
 					  					this.countDown();
-					  				} else if (sessionStorage.minutes == null && sessionStorage.secondes == null) {
-					  					this.countDown();
-					  				}else  { 
+					  				} else  { 
 	  									this.msgPutName();
 	  								}
 								});
