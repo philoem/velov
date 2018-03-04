@@ -170,28 +170,21 @@ class Marker extends Map {
 				for (let i = 0; i < this.tabJson.length; i++) {
 					this.data = this.tabJson[i].position;
 					this.latLng = new google.maps.LatLng(this.data.lat, this.data.lng);
+					// Création d'un objet pour les différents marqueurs
+					let objectMarker = {
+						position: this.latLng,
+						map: this.map,
+						icon: undefined,
+						title: `${this.tabJson[i].name} ${this.tabJson[i].address}`
+					};
 					if (this.tabJson[i].available_bikes >= 1 && this.tabJson[i].status =='OPEN') {
-						this.marker = new google.maps.Marker({
-							position: this.latLng,
-							map: this.map,
-							icon: this.iconeVerte,
-							title: `${this.tabJson[i].name} ${this.tabJson[i].address}` 
-						});
+						objectMarker.icon = this.iconeVerte;
 			  		} else if (this.tabJson[i].available_bike_stands <= this.tabJson[i].bike_stands && this.tabJson[i].available_bike_stands >= 1) {
-			  			this.marker = new google.maps.Marker({
-							position: this.latLng,
-							map: this.map,
-							icon: this.iconeBleue,
-							title: `${this.tabJson[i].name} ${this.tabJson[i].address}` 
-						});
+			  			objectMarker.icon = this.iconeBleue;
 			  		} else if (this.tabJson[i].status =='CLOSED') {
-			  			this.marker = new google.maps.Marker({
-							position: this.latLng,
-							map: this.map,
-							icon: this.iconeRouge,
-							title: `${this.tabJson[i].name} ${this.tabJson[i].address}` 
-						});
+			  			objectMarker.icon = this.iconeRouge;
 			  		} 
+			  		this.marker = new google.maps.Marker(objectMarker);
 					// Gestion des événements sur les marqueurs avec l'affichage des formulaires
 					this.marker.addListener('click', (e) => {
 						sessionStorage.removeItem('minutes'), sessionStorage.removeItem('secondes');
