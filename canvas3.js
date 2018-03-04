@@ -2,7 +2,7 @@ function signatureCapture() {
 	let canvas = document.querySelector("#signatureCanvas");
 	let ctx = canvas.getContext("2d");
 	canvas.height = 150 ;
-	canvas.width = 350 ; 
+	//canvas.width = 350 ; 
 	ctx.fillStyle = "#007BFF";
 	ctx.strokeStyle = "#007BFF";
 	ctx.lineWidth = 2;
