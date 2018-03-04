@@ -19,7 +19,7 @@ class Marker extends Map {
 	constructor() {
 		super();
 		this.s = 1201;// Temps en secondes correspondant à 20 minutes
-		this.min = Math.floor(this.s / 60);;
+		this.min = Math.floor(this.s / 60);
 		this.sec = this.s % 60;
 		this.minx = sessionStorage.getItem('minutes')* 60;
 		this.secx = parseInt(sessionStorage.getItem('secondes'));
